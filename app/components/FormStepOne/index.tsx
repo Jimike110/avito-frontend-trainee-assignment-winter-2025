@@ -36,11 +36,13 @@ const FormStepOne: React.FC<FormStep1Props> = ({ onNext, initialValues }) => {
 
   useEffect(() => {
     if (initialValues) {
+        console.log("Initial values: ", initialValues);
       form.setFieldsValue(initialValues);
     }
   }, [form, initialValues]);
 
   const onFinish = (values: FieldType) => {
+    console.log("FormStepOne onFinish values:", values);
     onNext(values);
   };
 
@@ -62,7 +64,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({ onNext, initialValues }) => {
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             style={{ maxWidth: 600 }}
-            initialValues={{ remember: true }}
+            // initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"

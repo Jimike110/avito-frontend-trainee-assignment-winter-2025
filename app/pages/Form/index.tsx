@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FormStepOne from '../../components/FormStepOne';
 import RealEstateForm from '../../components/FormStepTwo/RealEstateForm';
 import { ItemTypes } from '../../../server/ItemTypes';
+import AutoForm from '../../components/FormStepTwo/AutoForm';
 
 export interface FieldType {
   category?: string;
@@ -22,10 +23,11 @@ const MultiStepForm = () => {
   useEffect(() => {
     const savedData = localStorage.getItem('multiStepFormData');
     if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      setFormData(parsedData);
+      console.log('Saved Data on Load:', JSON.parse(savedData));
+      // const parsedData = JSON.parse(savedData);
+      // setFormData(parsedData);
 
-      if (parsedData.category) {
+      if (JSON.parse(savedData)?.category) {
         setCurrentStep(2);
       }
     }
@@ -36,6 +38,7 @@ const MultiStepForm = () => {
   }, [formData]);
 
   const handleNextStep = (values: FieldType) => {
+    console.log('handleNextStep values:', values);
     setFormData({ ...formData, ...values });
     setCurrentStep(2);
   };
@@ -47,10 +50,10 @@ const MultiStepForm = () => {
   const handleSubmit = (stepData: any) => {
     setFormData({ ...formData, ...stepData });
     console.log('Final Form Data: ', { ...formData, ...stepData });
-    localStorage.removeItem('multiStepFormData');
+    // localStorage.removeItem('multiStepFormData');
     alert('Form submitted!');
     setCurrentStep(1);
-    setFormData({});
+    // setFormData({});
   };
 
   const renderForm = () => {
@@ -61,6 +64,14 @@ const MultiStepForm = () => {
         if (formData.category === ItemTypes.REAL_ESTATE) {
           return (
             <RealEstateForm
+              onPrevious={handlePreviousStep}
+              onSubmit={handleSubmit}
+              initialValues={formData}
+            />
+          );
+        } else if (formData.category === ItemTypes.AUTO) {
+          return (
+            <AutoForm
               onPrevious={handlePreviousStep}
               onSubmit={handleSubmit}
               initialValues={formData}
