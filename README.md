@@ -1,70 +1,93 @@
-# Getting Started with Create React App
+# Тестовое задание для стажёра Frontend-направления (зимняя волна 2025)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Суть задания:
+Разработать клон Авито с базовыми возможностями по работе с объявлениями. Приложение должно поддерживать размещение, редактирование и отображение объявлений в трёх различных категориях: недвижимость, авто и услуги.
 
-## Available Scripts
+![Макет дизайна](https://github.com/user-attachments/assets/f2f3eddf-d205-4bf7-b9ec-2aa16606e0ff)
 
-In the project directory, you can run:
+### Обязательные технические требования:
+- Node.js v20  
+- **React** v18+  
+- **react-router-dom** для роутинга  
+- Использование готового API, расположенного в папке `server` этого репозитория  
+- Исходный код решения должен быть выложен с вашего аккаунта на GitHub с readme-файлом, содержащим **инструкцию по запуску** проекта и **обоснование выбора необязательных технологий**
 
-### `npm start`
+### Дополнительные технические требования:
+- Разрешено использование любой библиотеки UI-компонентов  
+- Желательно использование **TypeScript**   
+- Разрешено использование любых внешних библиотек, в том числе:  
+  - Дизайн-система/UI-kit (Material-UI, Ant Design)  
+  - Стейт-менеджмент (Redux, MobX, Effector)  
+  - Линтер (ESLint)  
+  - Prettier  
+  - Система сборки (Webpack, Vite)  
+  - Библиотека для работы с асинхронными HTTP-запросами (React Query, Axios)  
+- Возможность запустить проект в контейнеризированной docker-среде, ещё лучше — сервер и клиент запускаются при помощи docker compose  
+- Прерывание (отмена/прекращение) запросов при переходе со страницы на страницу  
+- Покрытие кода юнит-тестами  
+- Комментарии к коду и документация
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+*В скобках приведены примеры, вы можете  использовать любые другие инструменты и библиотеки.*
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Функциональные требования:
+- **Размещение объявлений:** форма с несколькими шагами для размещения объявлений  
+- **Список объявлений**: отображение всех размещённых объявлений  
+- **Просмотр объявлений:** детальная карточка объявления с возможностью редактирования  
+- **Редактирование объявлений:** изменение существующих объявлений с предзаполненными данными  
+- **Авторизация: (Дополнительно)** авторизация пользователей для размещения и редактирования объявлений
 
-### `npm test`
+### Маршрутизация
+- `/form` — для размещение и редактирования объявлений  
+- `/list` — для отображения списка объявлений  
+- `/item/:id` — для просмотра конкретного объявления
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Шаги формы
 
-### `npm run build`
+#### Основной шаг (для всех категорий)
+- **Название** (обязательное)  
+- **Описание** (обязательное)  
+- **Локация** (обязательное)  
+- **Фото** (необязательное)  
+- **Категория объявления** (выпадающий список: Недвижимость, Авто, Услуги) (обязательное)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Категорийный шаг
+Зависит от выбранной категории для объявления:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**- Недвижимость:**
+  - Тип недвижимости (например: квартира, дом, коттедж и т.д.) (выпадающий список, обязательное, строка)  
+  - Площадь (кв. м, обязательное, число)  
+  - Количество комнат (обязательное, число)  
+  - Цена (обязательное, число)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**- Авто:**
+  - Марка (выпадающий список, обязательное, строка)  
+  - Модель (обязательное, строка)  
+  - Год выпуска (обязательное, число)  
+  - Пробег (км, опциональное, число)
 
-### `npm run eject`
+**- Услуги:**  
+  - Тип услуги (например: ремонт, уборка, доставка) (выпадающий список, обязательное, строка)  
+  - Опыт работы (лет, обязательное, число)  
+  - Стоимость (обязательное, число)  
+  - График работы (опциональное, строка)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+*Если форма находится в режиме редактирования, нужно отобразить это визуально (например, с помощью заголовка)*
+*Также должна быть реализована валидация всех полей*
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Список объявлений
+- Максимальное количество объявлений на странице — 5  
+- После размещения объявление отображается в списке на маршруте `/list`  
+- На странице есть кнопка «Разместить объявление», которая будет вести на форму  
+- Превью объявления в списке показывает фото (или заглушку, если фото нет), название, локацию и категорию объявления (авто, недвижимость или услуга)  
+- Есть кнопка «Открыть», которая ведёт на страницу объявления `/item/:id`  
+- Реализован поиск объявления по названию  
+- Реализована пагинация (допускается как на клиенте, так и на сервере)  
+- Реализована фильтрация по категории объявления  
+- Дополнительно: при выборе значения для фильтра по категории появляются дополнительные фильтры по обязательным полям выбранной категории
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Просмотр и редактирование
+- При клике на объявление в списке открывается подробная карточка со всем полями  
+- Возможность редактирования объявления: переход на `/form` с предзаполненными данными
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Сохранение данных (Дополнительно)
+- При перезагрузке страницы данные формы должны сохраняться в черновик  
