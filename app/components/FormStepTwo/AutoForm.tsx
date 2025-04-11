@@ -11,12 +11,12 @@ import {
 import Title from 'antd/es/typography/Title';
 import React, { useEffect } from 'react';
 import { ItemTypes } from '../../../server/ItemTypes';
+import { Auto } from '../../types/form';
 
 type FieldType = {};
 
 const AutoBrands = [
   'Toyota',
-  'Volkswagen',
   'Honda',
   'Hyundai',
   'Kia',
@@ -45,9 +45,7 @@ const AutoBrands = [
   'KAMAZ',
   'Renault',
   'Hyundai',
-  'Kia',
   'Volkswagen',
-  'Toyota',
   'Nissan',
   'Skoda',
   'BMW',
@@ -77,12 +75,12 @@ const AutoForm: React.FC<RealEstateFormProps> = ({
     }
   }, [form, initialValues]);
 
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+  const onFinish: FormProps<Auto>['onFinish'] = (values) => {
     console.log(values);
     onSubmit(values);
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (
+  const onFinishFailed: FormProps<Auto>['onFinishFailed'] = (
     errorInfo
   ) => {
     console.log('Failed:', errorInfo);
@@ -114,7 +112,7 @@ const AutoForm: React.FC<RealEstateFormProps> = ({
           autoComplete="off"
           labelAlign="left"
         >
-          <Form.Item<FieldType>
+          <Form.Item<Auto>
             label={'Марка'}
             name="brand"
             rules={[
@@ -127,14 +125,14 @@ const AutoForm: React.FC<RealEstateFormProps> = ({
             <Select
               style={{ width: '100%' }}
               onChange={handleChange}
-              options={AutoBrands.sort().map((brand) => ({
+              options={[...new Set(AutoBrands)].sort().map((brand) => ({
                 value: `${brand}`,
                 label: `${brand}`,
               }))}
             />
           </Form.Item>
 
-          <Form.Item<FieldType>
+          <Form.Item<Auto>
             label="Модель"
             name="model"
             rules={[{ required: true, message: 'Пожалуйста, введите модель!' }]}
@@ -142,25 +140,25 @@ const AutoForm: React.FC<RealEstateFormProps> = ({
             <InputNumber style={{ width: '100%' }} />
           </Form.Item>
 
-          <Form.Item<FieldType>
+          <Form.Item<Auto>
             label="Год выпуска"
-            name="numberRooms"
+            name="year"
             rules={[
               {
                 required: true,
-                message: 'Пожалуйста, введите количество комнат!',
+                message: 'Пожалуйста, введите год выпуска!',
               },
             ]}
           >
-            <InputNumber style={{ width: '100%' }} suffix="кв. м" />
+            <InputNumber style={{ width: '100%' }} suffix="г." />
           </Form.Item>
 
-          <Form.Item<FieldType>
-            label="Цена"
-            name="price"
-            rules={[{ required: true, message: 'Пожалуйста, введите цену!' }]}
+          <Form.Item<Auto>
+            label="Пробег"
+            name="mileage"
+            rules={[{ required: true, message: 'Пожалуйста, введите пробег!' }]}
           >
-            <InputNumber style={{ width: '100%' }} suffix="₽" />
+            <InputNumber style={{ width: '100%' }} suffix="км." />
           </Form.Item>
 
           <Row justify={'space-between'}>

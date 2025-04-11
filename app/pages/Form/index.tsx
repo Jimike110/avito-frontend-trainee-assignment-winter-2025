@@ -18,20 +18,10 @@ export interface FieldType {
 
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState<FieldType>({});
-
-  useEffect(() => {
-    const savedData = localStorage.getItem('multiStepFormData');
-    if (savedData) {
-      console.log('Saved Data on Load:', JSON.parse(savedData));
-      // const parsedData = JSON.parse(savedData);
-      // setFormData(parsedData);
-
-      if (JSON.parse(savedData)?.category) {
-        setCurrentStep(2);
-      }
-    }
-  }, []);
+  const [formData, setFormData] = useState<FieldType>(() => {
+    return JSON.parse(localStorage.getItem('multiStepFormData') || '');
+  });
+  
 
   useEffect(() => {
     localStorage.setItem('multiStepFormData', JSON.stringify(formData));
