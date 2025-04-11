@@ -1,0 +1,80 @@
+import React, { useEffect, useState } from 'react';
+import FormStepOne from '../../components/FormStepOne';
+import RealEstateForm from '../../components/FormStepTwo/RealEstateForm';
+import { ItemTypes } from '../../../server/ItemTypes';
+
+export interface FieldType {
+  category?: string;
+  type?: string;
+  area?: number;
+  numberRooms?: number;
+  price?: number;
+  name?: string;
+  description?: string;
+  location?: string;
+  photo?: string;
+}
+
+const MultiStepForm = () => {
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [formData, setFormData] = useState<FieldType>({});
+
+  useEffect(() => {
+    const savedData = localStorage.getItem('multiStepFormData');
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      setFormData(parsedData);
+
+      if (parsedData.category) {
+        setCurrentStep(2);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('multiStepFormData', JSON.stringify(formData));
+  }, [formData]);
+
+  const handleNextStep = (values: FieldType) => {
+    setFormData({ ...formData, ...values });
+    setCurrentStep(2);
+  };
+
+  const handlePreviousStep = () => {
+    setCurrentStep((prevStep) => prevStep - 1);
+  };
+
+  const handleSubmit = (stepData: any) => {
+    setFormData({ ...formData, ...stepData });
+    console.log('Final Form Data: ', { ...formData, ...stepData });
+    localStorage.removeItem('multiStepFormData');
+    alert('Form submitted!');
+    setCurrentStep(1);
+    setFormData({});
+  };
+
+  const renderForm = () => {
+    switch (currentStep) {
+      case 1:
+        return <FormStepOne onNext={handleNextStep} initialValues={formData} />;
+      case 2:
+        if (formData.category === ItemTypes.REAL_ESTATE) {
+          return (
+            <RealEstateForm
+              onPrevious={handlePreviousStep}
+              onSubmit={handleSubmit}
+              initialValues={formData}
+            />
+          );
+        } else {
+          return <div>Please select an option in the first step.</div>;
+        }
+      default:
+        return null;
+    }
+  };
+
+  return <div style={{ paddingInline: '20px' }}>{renderForm()}</div>;
+};
+
+export default MultiStepForm;
