@@ -127,20 +127,17 @@ const AutoForm: React.FC<RealEstateFormProps> = ({
             <Select
               style={{ width: '100%' }}
               onChange={handleChange}
-              options={
-                AutoBrands.sort().map((brand) => ({
-                          value: `${brand}`,
-                          label: `${brand}`,
-                }))}
+              options={AutoBrands.sort().map((brand) => ({
+                value: `${brand}`,
+                label: `${brand}`,
+              }))}
             />
           </Form.Item>
 
           <Form.Item<FieldType>
             label="Модель"
             name="model"
-            rules={[
-              { required: true, message: 'Пожалуйста, введите модель!' },
-            ]}
+            rules={[{ required: true, message: 'Пожалуйста, введите модель!' }]}
           >
             <InputNumber style={{ width: '100%' }} />
           </Form.Item>

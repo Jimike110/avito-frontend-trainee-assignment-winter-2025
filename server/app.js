@@ -70,7 +70,7 @@ app.get('/items', (req, res) => {
 
 // Получение объявления по его id
 app.get('/items/:id', (req, res) => {
-  const item = items.find(i => i.id === parseInt(req.params.id, 10));
+  const item = items.find((i) => i.id === parseInt(req.params.id, 10));
   if (item) {
     res.json(item);
   } else {
@@ -80,7 +80,7 @@ app.get('/items/:id', (req, res) => {
 
 // Обновление объявления по его id
 app.put('/items/:id', (req, res) => {
-  const item = items.find(i => i.id === parseInt(req.params.id, 10));
+  const item = items.find((i) => i.id === parseInt(req.params.id, 10));
   if (item) {
     Object.assign(item, req.body);
     res.json(item);
@@ -91,7 +91,9 @@ app.put('/items/:id', (req, res) => {
 
 // Удаление объявления по его id
 app.delete('/items/:id', (req, res) => {
-  const itemIndex = items.findIndex(i => i.id === parseInt(req.params.id, 10));
+  const itemIndex = items.findIndex(
+    (i) => i.id === parseInt(req.params.id, 10)
+  );
   if (itemIndex !== -1) {
     items.splice(itemIndex, 1);
     res.status(204).send();

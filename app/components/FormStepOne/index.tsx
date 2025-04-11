@@ -36,13 +36,13 @@ const FormStepOne: React.FC<FormStep1Props> = ({ onNext, initialValues }) => {
 
   useEffect(() => {
     if (initialValues) {
-        console.log("Initial values: ", initialValues);
+      console.log('Initial values: ', initialValues);
       form.setFieldsValue(initialValues);
     }
   }, [form, initialValues]);
 
   const onFinish = (values: FieldType) => {
-    console.log("FormStepOne onFinish values:", values);
+    console.log('FormStepOne onFinish values:', values);
     onNext(values);
   };
 
@@ -57,7 +57,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({ onNext, initialValues }) => {
         justify="center"
       >
         <Title level={3}>Форма размещения</Title>
-        <Card variant='borderless'>
+        <Card variant="borderless">
           <Form
             name="basic"
             form={form}

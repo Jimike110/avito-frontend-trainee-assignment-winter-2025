@@ -1,10 +1,18 @@
-import { Button, Card, Flex, Form, FormProps, InputNumber, Row, Select } from 'antd';
+import {
+  Button,
+  Card,
+  Flex,
+  Form,
+  FormProps,
+  InputNumber,
+  Row,
+  Select,
+} from 'antd';
 import Title from 'antd/es/typography/Title';
 import React, { useEffect } from 'react';
 import { ItemTypes } from '../../../server/ItemTypes';
 
-type FieldType = {
-};
+type FieldType = {};
 
 const RealEstateTypes = {
   FLAT: 'Кватира',
@@ -129,31 +137,29 @@ const RealEstateForm: React.FC<RealEstateFormProps> = ({
             <InputNumber style={{ width: '100%' }} suffix="₽" />
           </Form.Item>
 
+          <Row justify={'space-between'}>
+            <Form.Item>
+              <Button
+                size="large"
+                type="default"
+                onClick={onPrevious}
+                style={{ marginBlock: '30px' }}
+              >
+                Previous
+              </Button>
+            </Form.Item>
 
-<Row justify={'space-between'}>
-<Form.Item>
-            <Button
-              size="large"
-              type="default"
-              onClick={onPrevious}
-              style={{ marginBlock: '30px' }}
-            >
-              Previous
-            </Button>
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              size="large"
-              type="primary"
-              htmlType="submit"
-              style={{ marginBlock: '30px' }}
-            >
-              Submit
-            </Button>
-          </Form.Item>
-
-</Row>
+            <Form.Item>
+              <Button
+                size="large"
+                type="primary"
+                htmlType="submit"
+                style={{ marginBlock: '30px' }}
+              >
+                Submit
+              </Button>
+            </Form.Item>
+          </Row>
         </Form>
       </Card>
     </Flex>

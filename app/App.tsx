@@ -10,11 +10,11 @@ import MultiStepForm from './pages/Form';
 const App: React.FC = () => {
   return (
     <Routes>
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route index element={<Home />} />
-        <Route path='/form' element={<MultiStepForm />} />
-        <Route path='/test' element={<Test />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route index element={<Home />} />
+      <Route path="/form" element={<MultiStepForm />} />
+      <Route path="/test" element={<Test />} />
     </Routes>
   );
 };
