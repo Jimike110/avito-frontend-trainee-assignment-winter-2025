@@ -21,8 +21,13 @@ export interface Auto {
 }
 
 export interface Services {
-  type: string;
+  type: 'Ремонт' | 'Уборка' | 'Доставка';
   experience: number;
   cost: number;
   workHours?: string;
+}
+export interface StepTwoFormProps {
+  onPrevious: () => void;
+  onSubmit: (data: any) => void;
+  initialValues?: Record<string, any>;
 }
