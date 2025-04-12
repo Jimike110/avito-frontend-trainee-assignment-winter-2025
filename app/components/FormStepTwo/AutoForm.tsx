@@ -11,7 +11,7 @@ import {
 import Title from 'antd/es/typography/Title';
 import React, { useEffect } from 'react';
 import { ItemTypes } from '../../../server/ItemTypes';
-import { Auto } from '../../types/form';
+import { Auto, StepTwoFormProps } from '../../types/form';
 
 const AutoBrands = [
   'Toyota',
@@ -53,13 +53,7 @@ const AutoBrands = [
   'Geely',
 ];
 
-interface RealEstateFormProps {
-  onPrevious: () => void;
-  onSubmit: (data: any) => void;
-  initialValues?: Record<string, any>;
-}
-
-const AutoForm: React.FC<RealEstateFormProps> = ({
+const AutoForm: React.FC<StepTwoFormProps> = ({
   onPrevious,
   onSubmit,
   initialValues,
@@ -94,7 +88,7 @@ const AutoForm: React.FC<RealEstateFormProps> = ({
       justify="center"
     >
       <Title level={3}>{ItemTypes.AUTO}</Title>
-      <Card>
+      <Card variant="borderless">
         <Form
           name="basic"
           form={form}

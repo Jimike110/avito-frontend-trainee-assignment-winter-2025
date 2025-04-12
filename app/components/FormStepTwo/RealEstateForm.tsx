@@ -11,21 +11,15 @@ import {
 import Title from 'antd/es/typography/Title';
 import React, { useEffect } from 'react';
 import { ItemTypes } from '../../../server/ItemTypes';
-import { RealEstate } from '../../types/form';
+import { RealEstate, StepTwoFormProps } from '../../types/form';
 
 const RealEstateTypes = {
-  FLAT: 'Кватира',
+  FLAT: 'Квартира',
   HOUSE: 'Дом',
   COTTAGE: 'Коттедж',
 };
 
-interface RealEstateFormProps {
-  onPrevious: () => void;
-  onSubmit: (data: any) => void;
-  initialValues?: Record<string, any>;
-}
-
-const RealEstateForm: React.FC<RealEstateFormProps> = ({
+const RealEstateForm: React.FC<StepTwoFormProps> = ({
   onPrevious,
   onSubmit,
   initialValues,
@@ -62,7 +56,7 @@ const RealEstateForm: React.FC<RealEstateFormProps> = ({
       justify="center"
     >
       <Title level={3}>{ItemTypes.REAL_ESTATE}</Title>
-      <Card>
+      <Card variant="borderless">
         <Form
           name="basic"
           form={form}
@@ -116,7 +110,7 @@ const RealEstateForm: React.FC<RealEstateFormProps> = ({
           </Form.Item>
 
           <Form.Item<RealEstate>
-            label="Колчество комнат"
+            label="Количество комнат"
             name="roomNumber"
             rules={[
               {
