@@ -13,8 +13,6 @@ import React, { useEffect } from 'react';
 import { ItemTypes } from '../../../server/ItemTypes';
 import { Auto } from '../../types/form';
 
-type FieldType = {};
-
 const AutoBrands = [
   'Toyota',
   'Honda',
@@ -47,7 +45,6 @@ const AutoBrands = [
   'Hyundai',
   'Volkswagen',
   'Nissan',
-  'Skoda',
   'BMW',
   'Mercedes-Benz',
   'Audi',
@@ -80,9 +77,7 @@ const AutoForm: React.FC<RealEstateFormProps> = ({
     onSubmit(values);
   };
 
-  const onFinishFailed: FormProps<Auto>['onFinishFailed'] = (
-    errorInfo
-  ) => {
+  const onFinishFailed: FormProps<Auto>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -137,7 +132,9 @@ const AutoForm: React.FC<RealEstateFormProps> = ({
             name="model"
             rules={[{ required: true, message: 'Пожалуйста, введите модель!' }]}
           >
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber
+             style={{ width: '100%' }}
+              />
           </Form.Item>
 
           <Form.Item<Auto>
@@ -150,7 +147,7 @@ const AutoForm: React.FC<RealEstateFormProps> = ({
               },
             ]}
           >
-            <InputNumber style={{ width: '100%' }} suffix="г." />
+            <InputNumber min={1900} max={new Date().getFullYear()} style={{ width: '100%' }} suffix="г." />
           </Form.Item>
 
           <Form.Item<Auto>
