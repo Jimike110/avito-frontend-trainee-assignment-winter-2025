@@ -125,7 +125,10 @@ const ServicesForm: React.FC<StepTwoFormProps> = ({
             label="График работы"
             name="workHours"
             rules={[
-              { required: false, message: 'Пожалуйста, введите график работы!' },
+              {
+                required: false,
+                message: 'Пожалуйста, введите график работы!',
+              },
             ]}
           >
             <Input style={{ width: '100%' }} />

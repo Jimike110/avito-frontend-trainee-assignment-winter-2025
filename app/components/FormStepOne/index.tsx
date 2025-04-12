@@ -152,7 +152,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
             </Button>
           </Form.Item>
         </Form>
-        </Card>
+      </Card>
     </Flex>
   );
 };

@@ -14,7 +14,7 @@ export interface FieldType {
   name?: string;
   description?: string;
   location?: string;
-  photo?: any;                    
+  photo?: any;
 }
 
 const MultiStepForm = () => {

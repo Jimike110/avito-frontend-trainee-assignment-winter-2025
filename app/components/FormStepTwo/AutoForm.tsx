@@ -126,9 +126,7 @@ const AutoForm: React.FC<StepTwoFormProps> = ({
             name="model"
             rules={[{ required: true, message: 'Пожалуйста, введите модель!' }]}
           >
-            <InputNumber
-             style={{ width: '100%' }}
-              />
+            <InputNumber style={{ width: '100%' }} />
           </Form.Item>
 
           <Form.Item<Auto>
@@ -141,7 +139,12 @@ const AutoForm: React.FC<StepTwoFormProps> = ({
               },
             ]}
           >
-            <InputNumber min={1900} max={new Date().getFullYear()} style={{ width: '100%' }} suffix="г." />
+            <InputNumber
+              min={1900}
+              max={new Date().getFullYear()}
+              style={{ width: '100%' }}
+              suffix="г."
+            />
           </Form.Item>
 
           <Form.Item<Auto>
