@@ -11,8 +11,7 @@ import {
 import Title from 'antd/es/typography/Title';
 import React, { useEffect } from 'react';
 import { ItemTypes } from '../../../server/ItemTypes';
-
-type FieldType = {};
+import { RealEstate } from '../../types/form';
 
 const RealEstateTypes = {
   FLAT: 'Кватира',
@@ -39,12 +38,12 @@ const RealEstateForm: React.FC<RealEstateFormProps> = ({
     }
   }, [form, initialValues]);
 
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+  const onFinish: FormProps<RealEstate>['onFinish'] = (values) => {
     console.log(values);
     onSubmit(values);
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (
+  const onFinishFailed: FormProps<RealEstate>['onFinishFailed'] = (
     errorInfo
   ) => {
     console.log('Failed:', errorInfo);
@@ -70,13 +69,13 @@ const RealEstateForm: React.FC<RealEstateFormProps> = ({
           labelCol={{ span: 10 }}
           wrapperCol={{ span: 16 }}
           style={{ maxWidth: 600 }}
-          // initialValues={{ remember: true }}
+          initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
           labelAlign="left"
         >
-          <Form.Item<FieldType>
+          <Form.Item<RealEstate>
             label={'Тип недвижимости'}
             name="type"
             rules={[
@@ -106,7 +105,7 @@ const RealEstateForm: React.FC<RealEstateFormProps> = ({
             />
           </Form.Item>
 
-          <Form.Item<FieldType>
+          <Form.Item<RealEstate>
             label="Площадь"
             name="area"
             rules={[
@@ -116,9 +115,9 @@ const RealEstateForm: React.FC<RealEstateFormProps> = ({
             <InputNumber suffix="кв. м" style={{ width: '100%' }} />
           </Form.Item>
 
-          <Form.Item<FieldType>
+          <Form.Item<RealEstate>
             label="Колчество комнат"
-            name="numberRooms"
+            name="roomNumber"
             rules={[
               {
                 required: true,
@@ -129,7 +128,7 @@ const RealEstateForm: React.FC<RealEstateFormProps> = ({
             <InputNumber style={{ width: '100%' }} suffix="кв. м" />
           </Form.Item>
 
-          <Form.Item<FieldType>
+          <Form.Item<RealEstate>
             label="Цена"
             name="price"
             rules={[{ required: true, message: 'Пожалуйста, введите цену!' }]}
