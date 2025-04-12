@@ -3,6 +3,7 @@ import FormStepOne from '../../components/FormStepOne';
 import RealEstateForm from '../../components/FormStepTwo/RealEstateForm';
 import { ItemTypes } from '../../../server/ItemTypes';
 import AutoForm from '../../components/FormStepTwo/AutoForm';
+import ServicesForm from '../../components/FormStepTwo/ServicesForm';
 
 export interface FieldType {
   category?: string;
@@ -13,15 +14,14 @@ export interface FieldType {
   name?: string;
   description?: string;
   location?: string;
-  photo?: string;
+  photo?: any;                    
 }
 
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<FieldType>(() => {
-    return JSON.parse(localStorage.getItem('multiStepFormData') || '');
+    return JSON.parse(localStorage.getItem('multiStepFormData') || '{}');
   });
-  
 
   useEffect(() => {
     localStorage.setItem('multiStepFormData', JSON.stringify(formData));
@@ -40,16 +40,22 @@ const MultiStepForm = () => {
   const handleSubmit = (stepData: any) => {
     setFormData({ ...formData, ...stepData });
     console.log('Final Form Data: ', { ...formData, ...stepData });
-    // localStorage.removeItem('multiStepFormData');
+    localStorage.removeItem('multiStepFormData');
     alert('Form submitted!');
     setCurrentStep(1);
-    // setFormData({});
+    setFormData({});
   };
 
   const renderForm = () => {
     switch (currentStep) {
       case 1:
-        return <FormStepOne onNext={handleNextStep} initialValues={formData} />;
+        return (
+          <FormStepOne
+            onNext={handleNextStep}
+            initialValues={formData}
+            setFormData={setFormData}
+          />
+        );
       case 2:
         if (formData.category === ItemTypes.REAL_ESTATE) {
           return (
@@ -67,6 +73,14 @@ const MultiStepForm = () => {
               initialValues={formData}
             />
           );
+        } else if (formData.category === ItemTypes.SERVICES) {
+          return (
+            <ServicesForm
+              onPrevious={handlePreviousStep}
+              onSubmit={handleSubmit}
+              initialValues={formData}
+            />
+          );
         } else {
           return <div>Please select an option in the first step.</div>;
         }
@@ -75,7 +89,7 @@ const MultiStepForm = () => {
     }
   };
 
-  return <div style={{ paddingInline: '20px' }}>{renderForm()}</div>;
+  return <div>{renderForm()}</div>;
 };
 
 export default MultiStepForm;
