@@ -11,6 +11,7 @@ import { FieldType } from '../../pages/Form';
 interface FormStep1Props {
   onNext: (values: FieldType) => void;
   initialValues?: FieldType;
+  setFormData: any;
 }
 
 const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -21,7 +22,11 @@ const handleChange = (value: string) => {
   console.log(`selected ${value}`);
 };
 
-const FormStepOne: React.FC<FormStep1Props> = ({ onNext, initialValues }) => {
+const FormStepOne: React.FC<FormStep1Props> = ({
+  onNext,
+  initialValues,
+  setFormData,
+}) => {
   const [form] = useForm<FieldType>();
 
   useEffect(() => {
@@ -49,9 +54,9 @@ const FormStepOne: React.FC<FormStep1Props> = ({ onNext, initialValues }) => {
         <Form
           name="basic"
           form={form}
-          labelCol={{ span: 10 }}
+          labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
+          style={{ maxWidth: 900 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -92,6 +97,19 @@ const FormStepOne: React.FC<FormStep1Props> = ({ onNext, initialValues }) => {
             <Upload
               action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
               listType="picture"
+              defaultFileList={initialValues?.photo?.fileList}
+              onRemove={(removedFile) => {
+                setFormData((prevFormData: FieldType) => {
+                  const updatedFileList =
+                    prevFormData?.photo?.fileList?.filter(
+                      (file) => file.uid !== removedFile.uid
+                    ) || [];
+                  return {
+                    ...prevFormData,
+                    photo: { fileList: updatedFileList },
+                  };
+                });
+              }}
             >
               <Button type="primary" icon={<UploadOutlined />}>
                 Upload
@@ -134,7 +152,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({ onNext, initialValues }) => {
             </Button>
           </Form.Item>
         </Form>
-      </Card>
+        </Card>
     </Flex>
   );
 };
