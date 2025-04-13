@@ -67,7 +67,6 @@ const AutoForm: React.FC<StepTwoFormProps> = ({
   }, [form, initialValues]);
 
   const onFinish: FormProps<Auto>['onFinish'] = (values) => {
-    console.log(values);
     onSubmit(values);
   };
 

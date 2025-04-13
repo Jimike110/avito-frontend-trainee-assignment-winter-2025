@@ -31,13 +31,11 @@ const FormStepOne: React.FC<FormStep1Props> = ({
 
   useEffect(() => {
     if (initialValues) {
-      console.log('Initial values: ', initialValues);
       form.setFieldsValue(initialValues);
     }
   }, [form, initialValues]);
 
   const onFinish = (values: FieldType) => {
-    console.log('FormStepOne onFinish values:', values);
     onNext(values);
   };
 

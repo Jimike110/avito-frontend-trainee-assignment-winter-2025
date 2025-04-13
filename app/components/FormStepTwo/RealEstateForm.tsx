@@ -33,7 +33,6 @@ const RealEstateForm: React.FC<StepTwoFormProps> = ({
   }, [form, initialValues]);
 
   const onFinish: FormProps<RealEstate>['onFinish'] = (values) => {
-    console.log(values);
     onSubmit(values);
   };
 

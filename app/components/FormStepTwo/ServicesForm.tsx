@@ -34,7 +34,6 @@ const ServicesForm: React.FC<StepTwoFormProps> = ({
   }, [form, initialValues]);
 
   const onFinish: FormProps<Services>['onFinish'] = (values) => {
-    console.log(values);
     onSubmit(values);
   };
 
