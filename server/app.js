@@ -1,8 +1,18 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import { ItemTypes } from './ItemTypes.js';
 
 const app = express();
 app.use(bodyParser.json());
+
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 // In-memory хранилище для объявлений
 let items = [];
@@ -16,6 +26,11 @@ const itemsIdCounter = makeCounter();
 
 // Создание нового объявления
 app.post('/items', (req, res) => {
+  console.log(req.body);
+  console.log("Name:", req.body.name);
+  console.log("Description:", req.body.description);
+  console.log("Location:", req.body.location);
+  console.log("Type:", req.body.type);
   const { name, description, location, type, ...rest } = req.body;
 
   // Validate common required fields
@@ -64,7 +79,7 @@ app.post('/items', (req, res) => {
 
 // Получение всех объявлений
 app.get('/items', (req, res) => {
-  console.log("Получение");
+  console.log('Получение');
   res.json(items);
 });
 
