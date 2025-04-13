@@ -5,31 +5,13 @@ import { Link } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAdverts } from '../../api/api';
-import { Auto, BaseFormData, RealEstate, Services } from '../../types/form';
-import { ItemTypes } from '../../../server/ItemTypes';
-
-interface RealEstateAdvert extends BaseFormData, RealEstate {
-  type: 'Недвижимость';
-}
-
-interface AutoAdvert extends BaseFormData, Auto {
-  type: 'Авто';
-}
-
-interface ServicesAdvert extends BaseFormData, Services {
-  type: 'Услуги';
-}
-
-type AdvertItem = RealEstateAdvert | AutoAdvert | ServicesAdvert;
+import {
+  AdvertItem,
+  typeColors,
+} from '../../types/form';
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
 type PaginationAlign = 'start' | 'center' | 'end';
-
-const typeColors = {
-  [ItemTypes.REAL_ESTATE]: 'red',
-  [ItemTypes.AUTO]: 'blue',
-  [ItemTypes.SERVICES]: 'green',
-};
 
 const AdvertListing: React.FC = () => {
   const [position, setPosition] = useState<PaginationPosition>('bottom');
@@ -62,9 +44,9 @@ const AdvertListing: React.FC = () => {
       </Flex>
       <List
         loading={isLoading}
-        pagination={{ position, align, pageSize: 3 }}
+        pagination={{ position, align, pageSize: 5 }}
         dataSource={data}
-        renderItem={(item: AdvertItem, index) => {
+        renderItem={(item: AdvertItem) => {
           console.log(item);
           return (
             <List.Item style={{ padding: '10px 0' }}>
@@ -121,10 +103,12 @@ const AdvertListing: React.FC = () => {
                       {item.description || 'No description available.'}
                     </Paragraph>
                     <Flex justify="space-between" align="center">
-                      <Tag color={typeColors[item.type] || 'default'}>
+                      <Tag
+                        color={item.type ? typeColors[item.type] : 'default'}
+                      >
                         {item.type}
                       </Tag>
-                      <Link to={`/item/${index}`}>
+                      <Link to={`/item/${item.id}`}>
                         <Button
                           style={{ backgroundColor: '#12b004' }}
                           type="primary"
