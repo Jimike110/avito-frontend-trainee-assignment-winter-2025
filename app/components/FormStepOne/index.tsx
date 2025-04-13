@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import type { FormProps } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Card, Flex, Form, Input, Select, Upload } from 'antd';
+import { Button, Card, Flex, Form, Input, Select, Upload, message } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import Title from 'antd/es/typography/Title';
 import { ItemTypes } from '../../../server/ItemTypes.js';
 import { useForm } from 'antd/es/form/Form';
 import { BaseFormData } from '../../types/form';
+import { API_BASE_URL } from '../../api/api.js';
+import type { UploadRequestOption } from 'rc-upload/lib/interface'; // Import the correct type
 
 interface FormStep1Props {
   onNext: (values: BaseFormData) => void;
@@ -36,7 +38,41 @@ const FormStepOne: React.FC<FormStep1Props> = ({
     }
   }, [form, initialValues]);
 
+  const customRequest = async (options: UploadRequestOption) => {
+    const { file, onSuccess, onError } = options;
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        onSuccess(data);
+        message.success(`${file.name} file uploaded successfully`);
+      } else {
+        const errorData = await response.json();
+        onError(new Error(errorData?.error || `Upload failed with status ${response.status}`));
+        message.error(`${file.name} file upload failed: ${errorData?.error || response.statusText}`);
+      }
+    } catch (error) {
+      onError(error);
+      message.error(`${file.name} file upload failed: ${error.message}`);
+    }
+  };
+
+  const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
+  };
+
   const onFinish = (values: BaseFormData) => {
+    console.log('Form values on finish:', values);
     onNext(values);
   };
 
@@ -92,29 +128,21 @@ const FormStepOne: React.FC<FormStep1Props> = ({
             <Input />
           </Form.Item>
 
-          {/* <Form.Item<BaseFormData> label={'Фото'} name="picture">
+          <Form.Item<BaseFormData>
+            label={'Фото'}
+            name="picture"
+            valuePropName="fileList"
+            getValueFromEvent={normFile}
+          >
             <Upload
-              action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+              name="picture"
               listType="picture"
               defaultFileList={initialValues?.picture?.fileList}
-              onRemove={(removedFile) => {
-                setFormData((prevFormData: BaseFormData) => {
-                  const updatedFileList =
-                    prevFormData?.picture?.fileList?.filter(
-                      (file) => file.uid !== removedFile.uid
-                    ) || [];
-                  return {
-                    ...prevFormData,
-                    photo: { fileList: updatedFileList },
-                  };
-                });
-              }}
+              customRequest={customRequest}
             >
-              <Button type="primary" icon={<UploadOutlined />}>
-                Upload
-              </Button>
+              <Button icon={<UploadOutlined />}>Upload</Button>
             </Upload>
-          </Form.Item> */}
+          </Form.Item>
 
           <Form.Item<BaseFormData>
             label={'Категория'}

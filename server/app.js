@@ -1,18 +1,52 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 import { ItemTypes } from './ItemTypes.js';
 
 const app = express();
-app.use(bodyParser.json());
 
 app.use(
   cors({
     origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'x-requested-with',
+    ],
   })
 );
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+
+// Ensure the upload folder exists
+const UPLOAD_FOLDER = './uploads';
+if (!fs.existsSync(UPLOAD_FOLDER)) {
+  fs.mkdirSync(UPLOAD_FOLDER);
+}
+
+// Configure storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, UPLOAD_FOLDER);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, file.fieldname + '-' + uniqueSuffix + ext);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 50 * 1024 * 1024 },
+});
 
 // In-memory хранилище для объявлений
 let items = [];
@@ -24,13 +58,26 @@ const makeCounter = () => {
 
 const itemsIdCounter = makeCounter();
 
+// Upload endpoint
+app.post('/upload', upload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+
+  const fileUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
+  res.status(200).json({
+    name: req.file.filename,
+    url: fileUrl,
+  });
+});
+
 // Создание нового объявления
 app.post('/items', (req, res) => {
   console.log(req.body);
-  console.log("Name:", req.body.name);
-  console.log("Description:", req.body.description);
-  console.log("Location:", req.body.location);
-  console.log("Type:", req.body.type);
+  console.log('Name:', req.body.name);
+  console.log('Description:', req.body.description);
+  console.log('Location:', req.body.location);
+  console.log('Type:', req.body.type);
   const { name, description, location, type, ...rest } = req.body;
 
   // Validate common required fields

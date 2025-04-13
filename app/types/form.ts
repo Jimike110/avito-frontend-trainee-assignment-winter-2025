@@ -2,7 +2,7 @@ export interface BaseFormData {
   name: string;
   description: string;
   location: string;
-  picture?: string | HTMLImageElement;
+  picture: [{}];
   type: 'Недвижимость' | 'Авто' | 'Услуги' | undefined;
 }
 
