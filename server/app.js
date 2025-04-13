@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-import { ItemTypes } from './ItemTypes';
 
 const app = express();
 app.use(bodyParser.json());
@@ -65,6 +64,7 @@ app.post('/items', (req, res) => {
 
 // Получение всех объявлений
 app.get('/items', (req, res) => {
+  console.log("Получение");
   res.json(items);
 });
 

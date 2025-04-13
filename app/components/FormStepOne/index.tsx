@@ -4,7 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { Button, Card, Flex, Form, Input, Select, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import Title from 'antd/es/typography/Title';
-import { ItemTypes } from '../../../server/ItemTypes';
+import { ItemTypes } from '../../../server/ItemTypes.mjs';
 import { useForm } from 'antd/es/form/Form';
 import { FieldType } from '../../pages/Form';
 

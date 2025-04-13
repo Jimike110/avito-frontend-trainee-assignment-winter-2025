@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import FormStepOne from '../../components/FormStepOne';
 import RealEstateForm from '../../components/FormStepTwo/RealEstateForm';
-import { ItemTypes } from '../../../server/ItemTypes';
+import { ItemTypes } from '../../../server/ItemTypes.mjs';
 import AutoForm from '../../components/FormStepTwo/AutoForm';
 import ServicesForm from '../../components/FormStepTwo/ServicesForm';
 
