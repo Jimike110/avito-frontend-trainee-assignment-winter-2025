@@ -4,6 +4,7 @@ import {
   Flex,
   Form,
   FormProps,
+  Input,
   InputNumber,
   Row,
   Select,
@@ -125,7 +126,7 @@ const AutoForm: React.FC<StepTwoFormProps> = ({
             name="model"
             rules={[{ required: true, message: 'Пожалуйста, введите модель!' }]}
           >
-            <InputNumber style={{ width: '100%' }} />
+            <Input style={{ width: '100%' }} />
           </Form.Item>
 
           <Form.Item<Auto>

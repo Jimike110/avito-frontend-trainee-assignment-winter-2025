@@ -118,7 +118,7 @@ const RealEstateForm: React.FC<StepTwoFormProps> = ({
               },
             ]}
           >
-            <InputNumber style={{ width: '100%' }} suffix="кв. м" />
+            <InputNumber style={{ width: '100%' }} />
           </Form.Item>
 
           <Form.Item<RealEstate>
