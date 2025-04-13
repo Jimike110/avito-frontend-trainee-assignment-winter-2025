@@ -4,17 +4,19 @@ import { UploadOutlined } from '@ant-design/icons';
 import { Button, Card, Flex, Form, Input, Select, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import Title from 'antd/es/typography/Title';
-import { ItemTypes } from '../../../server/ItemTypes.mjs';
+import { ItemTypes } from '../../../server/ItemTypes.js';
 import { useForm } from 'antd/es/form/Form';
-import { FieldType } from '../../pages/Form';
+import { BaseFormData } from '../../types/form';
 
 interface FormStep1Props {
-  onNext: (values: FieldType) => void;
-  initialValues?: FieldType;
+  onNext: (values: BaseFormData) => void;
+  initialValues?: BaseFormData;
   setFormData: any;
 }
 
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+const onFinishFailed: FormProps<BaseFormData>['onFinishFailed'] = (
+  errorInfo
+) => {
   console.log('Failed:', errorInfo);
 };
 
@@ -25,9 +27,8 @@ const handleChange = (value: string) => {
 const FormStepOne: React.FC<FormStep1Props> = ({
   onNext,
   initialValues,
-  setFormData,
 }) => {
-  const [form] = useForm<FieldType>();
+  const [form] = useForm<BaseFormData>();
 
   useEffect(() => {
     if (initialValues) {
@@ -35,7 +36,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
     }
   }, [form, initialValues]);
 
-  const onFinish = (values: FieldType) => {
+  const onFinish = (values: BaseFormData) => {
     onNext(values);
   };
 
@@ -61,7 +62,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
           autoComplete="off"
           labelAlign="left"
         >
-          <Form.Item<FieldType>
+          <Form.Item<BaseFormData>
             label="Название"
             name="name"
             rules={[
@@ -81,7 +82,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
             <TextArea autoSize={{ minRows: 3 }} />
           </Form.Item>
 
-          <Form.Item<FieldType>
+          <Form.Item<BaseFormData>
             label="Локация"
             name="location"
             rules={[
@@ -91,15 +92,15 @@ const FormStepOne: React.FC<FormStep1Props> = ({
             <Input />
           </Form.Item>
 
-          <Form.Item<FieldType> label={'Фото'} name="photo">
+          {/* <Form.Item<BaseFormData> label={'Фото'} name="picture">
             <Upload
               action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
               listType="picture"
-              defaultFileList={initialValues?.photo?.fileList}
+              defaultFileList={initialValues?.picture?.fileList}
               onRemove={(removedFile) => {
-                setFormData((prevFormData: FieldType) => {
+                setFormData((prevFormData: BaseFormData) => {
                   const updatedFileList =
-                    prevFormData?.photo?.fileList?.filter(
+                    prevFormData?.picture?.fileList?.filter(
                       (file) => file.uid !== removedFile.uid
                     ) || [];
                   return {
@@ -113,11 +114,11 @@ const FormStepOne: React.FC<FormStep1Props> = ({
                 Upload
               </Button>
             </Upload>
-          </Form.Item>
+          </Form.Item> */}
 
-          <Form.Item<FieldType>
+          <Form.Item<BaseFormData>
             label={'Категория'}
-            name="category"
+            name="type"
             rules={[
               { required: true, message: 'Пожалуйста, выберите категорию!' },
             ]}
