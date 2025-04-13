@@ -3,13 +3,13 @@ export interface BaseFormData {
   description: string;
   location: string;
   picture?: string | HTMLImageElement;
-  category: 'Недвижимость' | 'Авто' | 'Услуги';
+  type: 'Недвижимость' | 'Авто' | 'Услуги';
 }
 
 export interface RealEstate {
-  type: 'Квартира' | 'Дом' | 'Коттедж' | 'Дача' | 'Этаж';
+  propertyType: 'Квартира' | 'Дом' | 'Коттедж' | 'Дача' | 'Этаж';
   area: number;
-  roomNumber: number;
+  rooms: number;
   price: number;
 }
 
@@ -21,7 +21,7 @@ export interface Auto {
 }
 
 export interface Services {
-  type: 'Ремонт' | 'Уборка' | 'Доставка';
+  serviceType: 'Ремонт' | 'Уборка' | 'Доставка';
   experience: number;
   cost: number;
   workHours?: string;

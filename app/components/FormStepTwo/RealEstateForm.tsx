@@ -10,7 +10,7 @@ import {
 } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React, { useEffect } from 'react';
-import { ItemTypes } from '../../../server/ItemTypes';
+import { ItemTypes } from '../../../server/ItemTypes.mjs';
 import { RealEstate, StepTwoFormProps } from '../../types/form';
 
 const RealEstateTypes = {
@@ -70,7 +70,7 @@ const RealEstateForm: React.FC<StepTwoFormProps> = ({
         >
           <Form.Item<RealEstate>
             label={'Тип недвижимости'}
-            name="type"
+            name="propertyType"
             rules={[
               {
                 required: true,
@@ -110,7 +110,7 @@ const RealEstateForm: React.FC<StepTwoFormProps> = ({
 
           <Form.Item<RealEstate>
             label="Количество комнат"
-            name="roomNumber"
+            name="rooms"
             rules={[
               {
                 required: true,
