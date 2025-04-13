@@ -5,6 +5,21 @@ import { Link } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAdverts } from '../../api/api';
+import { Auto, BaseFormData, RealEstate, Services } from '../../types/form';
+
+interface RealEstateAdvert extends BaseFormData, RealEstate {
+  type: 'Недвижимость';
+}
+
+interface AutoAdvert extends BaseFormData, Auto {
+  type: 'Авто';
+}
+
+interface ServicesAdvert extends BaseFormData, Services {
+  type: 'Услуги';
+}
+
+type AdvertItem = RealEstateAdvert | AutoAdvert | ServicesAdvert;
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
 type PaginationAlign = 'start' | 'center' | 'end';
@@ -42,7 +57,7 @@ const AdvertListing: React.FC = () => {
         loading={isLoading}
         pagination={{ position, align, pageSize: 3 }}
         dataSource={data}
-        renderItem={(item, index) => (
+        renderItem={(item: AdvertItem, index) => (
           <List.Item style={{ padding: '10px 0' }}>
             <Card loading={loading} style={{ width: '100%' }}>
               <Flex align="center" gap={16}>
@@ -79,7 +94,7 @@ const AdvertListing: React.FC = () => {
                       whiteSpace: 'nowrap',
                     }}
                   >
-                    {item.title}
+                    {item.name}
                   </Title>
                   <Paragraph
                     ellipsis={{ rows: 2 }}
