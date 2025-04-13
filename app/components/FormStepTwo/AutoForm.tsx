@@ -11,7 +11,7 @@ import {
 } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React, { useEffect } from 'react';
-import { ItemTypes } from '../../../server/ItemTypes.mjs';
+import { ItemTypes } from '../../../server/ItemTypes.js';
 import { Auto, StepTwoFormProps } from '../../types/form';
 
 const AutoBrands = [
@@ -68,6 +68,7 @@ const AutoForm: React.FC<StepTwoFormProps> = ({
   }, [form, initialValues]);
 
   const onFinish: FormProps<Auto>['onFinish'] = (values) => {
+    console.log("On finish", values);
     onSubmit(values);
   };
 

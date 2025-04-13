@@ -11,7 +11,7 @@ import {
 } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React, { useEffect } from 'react';
-import { ItemTypes } from '../../../server/ItemTypes.mjs';
+import { ItemTypes } from '../../../server/ItemTypes.js';
 import { Services, StepTwoFormProps } from '../../types/form';
 
 const ServicesTypes = {

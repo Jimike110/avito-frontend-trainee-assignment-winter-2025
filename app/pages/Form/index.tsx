@@ -1,35 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import FormStepOne from '../../components/FormStepOne';
 import RealEstateForm from '../../components/FormStepTwo/RealEstateForm';
-import { ItemTypes } from '../../../server/ItemTypes.mjs';
+import { ItemTypes } from '../../../server/ItemTypes.js';
 import AutoForm from '../../components/FormStepTwo/AutoForm';
 import ServicesForm from '../../components/FormStepTwo/ServicesForm';
-
-export interface FieldType {
-  category?: string;
-  type?: string;
-  area?: number;
-  numberRooms?: number;
-  price?: number;
-  name?: string;
-  description?: string;
-  location?: string;
-  photo?: any;
-}
+import { BaseFormData } from '../../types/form';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createAdvert } from '../../api/api';
+import { useNavigate } from 'react-router-dom';
 
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState<FieldType>(() => {
+  const [formData, setFormData] = useState<BaseFormData>(() => {
     return JSON.parse(localStorage.getItem('multiStepFormData') || '{}');
+  });
+  const navigate = useNavigate();
+
+  const { mutate } = useMutation({
+    mutationFn: createAdvert,
+    onSuccess: () => {
+      console.log('Advert created successfully!');
+      localStorage.removeItem('multiStepFormData');
+      alert('Form submitted!');
+      setCurrentStep(1);
+      setFormData({});
+      navigate('/list');
+    },
+    onError: (err) => {
+      console.error('Error creating advert:', err);
+      alert('Failed to submit form.');
+    },
   });
 
   useEffect(() => {
     localStorage.setItem('multiStepFormData', JSON.stringify(formData));
   }, [formData]);
 
-  const handleNextStep = (values: FieldType) => {
+  const handleNextStep = (values: BaseFormData) => {
     console.log('handleNextStep values:', values);
-    setFormData({ ...formData, ...values });
+    setFormData({ ...values });
     setCurrentStep(2);
   };
 
@@ -39,11 +48,8 @@ const MultiStepForm = () => {
 
   const handleSubmit = (stepData: any) => {
     setFormData({ ...formData, ...stepData });
-    console.log('Final Form Data: ', { ...formData, ...stepData });
-    localStorage.removeItem('multiStepFormData');
-    alert('Form submitted!');
-    setCurrentStep(1);
-    setFormData({});
+    console.log('Final Form Data: ', { ...formData, stepData });
+    mutate({ ...formData, ...stepData });
   };
 
   const renderForm = () => {
@@ -57,7 +63,7 @@ const MultiStepForm = () => {
           />
         );
       case 2:
-        if (formData.category === ItemTypes.REAL_ESTATE) {
+        if (formData.type === ItemTypes.REAL_ESTATE) {
           return (
             <RealEstateForm
               onPrevious={handlePreviousStep}
@@ -65,7 +71,7 @@ const MultiStepForm = () => {
               initialValues={formData}
             />
           );
-        } else if (formData.category === ItemTypes.AUTO) {
+        } else if (formData.type === ItemTypes.AUTO) {
           return (
             <AutoForm
               onPrevious={handlePreviousStep}
@@ -73,7 +79,7 @@ const MultiStepForm = () => {
               initialValues={formData}
             />
           );
-        } else if (formData.category === ItemTypes.SERVICES) {
+        } else if (formData.type === ItemTypes.SERVICES) {
           return (
             <ServicesForm
               onPrevious={handlePreviousStep}
