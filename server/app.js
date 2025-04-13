@@ -73,11 +73,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 // Создание нового объявления
 app.post('/items', (req, res) => {
-  console.log(req.body);
-  console.log('Name:', req.body.name);
-  console.log('Description:', req.body.description);
-  console.log('Location:', req.body.location);
-  console.log('Type:', req.body.type);
   const { name, description, location, type, ...rest } = req.body;
 
   // Validate common required fields
