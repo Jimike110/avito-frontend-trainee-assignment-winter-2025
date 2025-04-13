@@ -2,7 +2,7 @@ export interface BaseFormData {
   name: string;
   description: string;
   location: string;
-  picture: [{}];
+  picture: PictureItem[] | undefined;
   type: 'Недвижимость' | 'Авто' | 'Услуги' | undefined;
 }
 
@@ -30,4 +30,10 @@ export interface StepTwoFormProps {
   onPrevious: (data: any) => void;
   onSubmit: (data: any) => void;
   initialValues?: Record<string, any>;
+}
+
+interface PictureItem {
+  response?: {
+    url?: string;
+  };
 }

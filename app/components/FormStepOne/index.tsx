@@ -8,7 +8,6 @@ import { ItemTypes } from '../../../server/ItemTypes.js';
 import { useForm } from 'antd/es/form/Form';
 import { BaseFormData } from '../../types/form';
 import { API_BASE_URL } from '../../api/api.js';
-import type { UploadRequestOption } from 'rc-upload/lib/interface'; // Import the correct type
 
 interface FormStep1Props {
   onNext: (values: BaseFormData) => void;
@@ -29,6 +28,7 @@ const handleChange = (value: string) => {
 const FormStepOne: React.FC<FormStep1Props> = ({
   onNext,
   initialValues,
+  setFormData
 }) => {
   const [form] = useForm<BaseFormData>();
 
@@ -38,7 +38,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
     }
   }, [form, initialValues]);
 
-  const customRequest = async (options: UploadRequestOption) => {
+  const customRequest = async (options) => {
     const { file, onSuccess, onError } = options;
     const formData = new FormData();
     formData.append('file', file);
@@ -137,7 +137,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
             <Upload
               name="picture"
               listType="picture"
-              defaultFileList={initialValues?.picture?.fileList}
+              // defaultFileList={initialValues?.picture?.fileList}
               customRequest={customRequest}
             >
               <Button icon={<UploadOutlined />}>Upload</Button>

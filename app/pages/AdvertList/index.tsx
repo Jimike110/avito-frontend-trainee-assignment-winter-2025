@@ -6,6 +6,7 @@ import Paragraph from 'antd/es/typography/Paragraph';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAdverts } from '../../api/api';
 import { Auto, BaseFormData, RealEstate, Services } from '../../types/form';
+import { ItemTypes } from '../../../server/ItemTypes';
 
 interface RealEstateAdvert extends BaseFormData, RealEstate {
   type: 'Недвижимость';
@@ -23,6 +24,12 @@ type AdvertItem = RealEstateAdvert | AutoAdvert | ServicesAdvert;
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
 type PaginationAlign = 'start' | 'center' | 'end';
+
+const typeColors = {
+  [ItemTypes.REAL_ESTATE]: 'red',
+  [ItemTypes.AUTO]: 'blue',
+  [ItemTypes.SERVICES]: 'green',
+};
 
 const AdvertListing: React.FC = () => {
   const [position, setPosition] = useState<PaginationPosition>('bottom');
@@ -79,8 +86,10 @@ const AdvertListing: React.FC = () => {
                       height={'auto'}
                       style={{ borderRadius: 10 }}
                       src={
-                        item.picture.length > 0
-                          ? item.picture[0].response.url
+                        item.picture
+                          ? item.picture.length > 0
+                            ? item.picture[0]?.response?.url || ''
+                            : ''
                           : ''
                       }
                       fallback="https://parniangostar.com/_next/static/media/imgFallBack.581a9fe3.png"
@@ -111,15 +120,20 @@ const AdvertListing: React.FC = () => {
                     >
                       {item.description || 'No description available.'}
                     </Paragraph>
-                    <Link to={`/item/${index}`} style={{ textAlign: 'end' }}>
-                      <Button
-                        style={{ backgroundColor: '#12b004' }}
-                        type="primary"
-                        size="middle"
-                      >
-                        Открыть
-                      </Button>
-                    </Link>
+                    <Flex justify="space-between" align="center">
+                      <Tag color={typeColors[item.type] || 'default'}>
+                        {item.type}
+                      </Tag>
+                      <Link to={`/item/${index}`}>
+                        <Button
+                          style={{ backgroundColor: '#12b004' }}
+                          type="primary"
+                          size="middle"
+                        >
+                          Открыть
+                        </Button>
+                      </Link>
+                    </Flex>
                   </Flex>
                 </Flex>
               </Card>

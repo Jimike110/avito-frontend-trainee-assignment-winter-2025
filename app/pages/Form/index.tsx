@@ -28,7 +28,7 @@ const MultiStepForm = () => {
         description: '',
         location: '',
         type: undefined,
-        picture: [{}],
+        picture: undefined,
       });
       navigate('/list');
     },
