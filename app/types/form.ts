@@ -3,7 +3,7 @@ export interface BaseFormData {
   description: string;
   location: string;
   picture?: string | HTMLImageElement;
-  type: 'Недвижимость' | 'Авто' | 'Услуги';
+  type: 'Недвижимость' | 'Авто' | 'Услуги' | undefined;
 }
 
 export interface RealEstate {
@@ -27,7 +27,7 @@ export interface Services {
   workHours?: string;
 }
 export interface StepTwoFormProps {
-  onPrevious: () => void;
+  onPrevious: (data: any) => void;
   onSubmit: (data: any) => void;
   initialValues?: Record<string, any>;
 }

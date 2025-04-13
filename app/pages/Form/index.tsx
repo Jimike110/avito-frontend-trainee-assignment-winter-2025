@@ -23,7 +23,13 @@ const MultiStepForm = () => {
       localStorage.removeItem('multiStepFormData');
       alert('Form submitted!');
       setCurrentStep(1);
-      setFormData({});
+      setFormData({
+        name: '',
+        description: '',
+        location: '',
+        type: undefined,
+        picture: undefined,
+      });
       navigate('/list');
     },
     onError: (err) => {
