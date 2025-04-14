@@ -1,4 +1,4 @@
-import { ItemTypes } from "../../server/ItemTypes";
+import { ItemTypes } from './ItemTypes';
 
 export interface BaseFormData {
   id?: number;
@@ -43,7 +43,6 @@ export interface ServicesAdvert extends BaseFormData, Services {
 }
 
 export type AdvertItem = RealEstateAdvert | AutoAdvert | ServicesAdvert;
-
 
 export const typeColors = {
   [ItemTypes.REAL_ESTATE]: 'red',

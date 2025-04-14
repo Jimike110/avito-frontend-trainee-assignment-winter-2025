@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import FormStepOne from '../../components/FormStepOne';
 import RealEstateForm from '../../components/FormStepTwo/RealEstateForm';
-import { ItemTypes } from '../../../server/ItemTypes.js';
+import { ItemTypes } from '../../types/ItemTypes.js';
 import AutoForm from '../../components/FormStepTwo/AutoForm';
 import ServicesForm from '../../components/FormStepTwo/ServicesForm';
 import { BaseFormData } from '../../types/form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createAdvert } from '../../api/api';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from 'antd';
 
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -101,7 +102,20 @@ const MultiStepForm = () => {
     }
   };
 
-  return <div>{renderForm()}</div>;
+  return (
+    <div>
+      <Link to={'/list'}>
+        <Button
+          size="large"
+          style={{ position: 'absolute', right: 20, top: 30 }}
+          type="primary"
+        >
+          Список размещений
+        </Button>
+      </Link>
+      {renderForm()}
+    </div>
+  );
 };
 
 export default MultiStepForm;
