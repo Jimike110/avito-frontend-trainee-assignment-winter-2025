@@ -18,7 +18,7 @@ const App: React.FC = () => {
       <Route path="/form" element={<MultiStepForm />} />
       <Route path="/test" element={<Test />} />
       <Route path="/list" element={<AdvertListing />} />
-      <Route path='/item/:id' element={<AdvertPage />} />
+      <Route path="/item/:id" element={<AdvertPage />} />
     </Routes>
   );
 };

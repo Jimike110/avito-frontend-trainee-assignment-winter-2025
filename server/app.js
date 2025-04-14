@@ -56,7 +56,6 @@ if (!fs.existsSync(DATA_FILE)) {
   fs.writeFileSync(DATA_FILE, '[]', 'utf-8');
 }
 
-
 function readData() {
   try {
     const rawData = fs.readFileSync(DATA_FILE, 'utf-8');

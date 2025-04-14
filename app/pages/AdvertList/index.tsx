@@ -5,10 +5,7 @@ import { Link } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAdverts } from '../../api/api';
-import {
-  AdvertItem,
-  typeColors,
-} from '../../types/form';
+import { AdvertItem, typeColors } from '../../types/form';
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
 type PaginationAlign = 'start' | 'center' | 'end';
@@ -26,8 +23,8 @@ const AdvertListing: React.FC = () => {
   const ReversedData = useMemo(() => {
     if (data) {
       return [...data].reverse();
-    } else return undefined
-  }, [data])
+    } else return undefined;
+  }, [data]);
 
   return (
     <div style={{ padding: 20, maxWidth: 1200, margin: '20px auto' }}>

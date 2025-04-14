@@ -61,7 +61,7 @@ const AdvertPage = () => {
               <Row gutter={[54, 24]} align="middle" justify="center">
                 {/* Image Section */}
                 <Col xs={24} md={10} style={{ textAlign: 'center' }}>
-                  {data.picture && data.picture.length > 0 && (
+                  {data.picture && data.picture.length > 0 ? (
                     <Carousel arrows infinite={false}>
                       {data.picture.map((img, index) => (
                         <Image
@@ -79,6 +79,20 @@ const AdvertPage = () => {
                         />
                       ))}
                     </Carousel>
+                  ) : (
+                    <Image
+                      src={
+                        'https://parniangostar.com/_next/static/media/imgFallBack.581a9fe3.png'
+                      }
+                      alt={data.name}
+                      style={{
+                        width: '100%',
+                        height: 'auto',
+                        borderRadius: 8,
+                        objectFit: 'cover',
+                        marginBottom: 8,
+                      }}
+                    />
                   )}
                 </Col>
 
