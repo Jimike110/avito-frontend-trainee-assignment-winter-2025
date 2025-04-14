@@ -75,8 +75,8 @@ const AdvertListing: React.FC = () => {
                         item.picture
                           ? item.picture.length > 0
                             ? item.picture[0]?.response?.url || ''
-                            : ''
-                          : ''
+                            : undefined
+                          : undefined
                       }
                       fallback="https://parniangostar.com/_next/static/media/imgFallBack.581a9fe3.png"
                     />

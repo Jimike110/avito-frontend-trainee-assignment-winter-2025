@@ -67,7 +67,7 @@ const AdvertPage = () => {
                       {data.picture.map((img, index) => (
                         <Image
                           key={index}
-                          src={img?.response?.url || ''}
+                          src={img?.response?.url || undefined}
                           alt={data.name}
                           style={{
                             width: '100%',
