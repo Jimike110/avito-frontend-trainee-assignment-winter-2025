@@ -16,7 +16,7 @@ import { fetchAdvertById } from '../../api/api';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { AdvertItem, typeColors } from '../../types/form';
-import { ItemTypes } from '../../../server/ItemTypes';
+import { ItemTypes } from '../../types/ItemTypes';
 
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;

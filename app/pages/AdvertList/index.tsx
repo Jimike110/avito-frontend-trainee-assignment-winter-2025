@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Button, Card, Flex, Image, List, Tag } from 'antd';
 import Title from 'antd/es/typography/Title';
 import { Link } from 'react-router-dom';
@@ -23,6 +23,12 @@ const AdvertListing: React.FC = () => {
     queryFn: fetchAdverts,
   });
 
+  const ReversedData = useMemo(() => {
+    if (data) {
+      return [...data].reverse();
+    } else return undefined
+  }, [data])
+
   return (
     <div style={{ padding: 20, maxWidth: 1200, margin: '20px auto' }}>
       <Flex wrap justify="space-between">
@@ -45,7 +51,7 @@ const AdvertListing: React.FC = () => {
       <List
         loading={isLoading}
         pagination={{ position, align, pageSize: 5 }}
-        dataSource={data}
+        dataSource={ReversedData}
         renderItem={(item: AdvertItem) => {
           console.log(item);
           return (

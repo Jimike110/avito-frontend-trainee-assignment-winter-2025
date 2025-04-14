@@ -4,7 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { Button, Card, Flex, Form, Input, Select, Upload, message } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import Title from 'antd/es/typography/Title';
-import { ItemTypes } from '../../../server/ItemTypes.js';
+import { ItemTypes } from '../../types/ItemTypes.js';
 import { useForm } from 'antd/es/form/Form';
 import { BaseFormData } from '../../types/form';
 import { API_BASE_URL } from '../../api/api.js';
@@ -28,7 +28,7 @@ const handleChange = (value: string) => {
 const FormStepOne: React.FC<FormStep1Props> = ({
   onNext,
   initialValues,
-  setFormData
+  setFormData,
 }) => {
   const [form] = useForm<BaseFormData>();
 
@@ -55,8 +55,14 @@ const FormStepOne: React.FC<FormStep1Props> = ({
         message.success(`${file.name} file uploaded successfully`);
       } else {
         const errorData = await response.json();
-        onError(new Error(errorData?.error || `Upload failed with status ${response.status}`));
-        message.error(`${file.name} file upload failed: ${errorData?.error || response.statusText}`);
+        onError(
+          new Error(
+            errorData?.error || `Upload failed with status ${response.status}`
+          )
+        );
+        message.error(
+          `${file.name} file upload failed: ${errorData?.error || response.statusText}`
+        );
       }
     } catch (error) {
       onError(error);

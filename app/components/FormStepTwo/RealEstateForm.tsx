@@ -10,7 +10,7 @@ import {
 } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React, { useEffect } from 'react';
-import { ItemTypes } from '../../../server/ItemTypes.js';
+import { ItemTypes } from '../../types/ItemTypes.js';
 import { RealEstate, StepTwoFormProps } from '../../types/form';
 
 const RealEstateTypes = {
