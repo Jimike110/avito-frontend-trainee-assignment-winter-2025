@@ -43,6 +43,7 @@ const AdvertPage = () => {
               boxSizing: 'border-box',
             }}
           >
+            <title>{`${data.name} - ${data.type}`}</title>
             <Title level={3} style={{ textAlign: 'center', marginBottom: 20 }}>
               Страница объявления
             </Title>

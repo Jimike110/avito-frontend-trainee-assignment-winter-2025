@@ -63,36 +63,48 @@ const MultiStepForm = () => {
     switch (currentStep) {
       case 1:
         return (
+          <>
+          <title>Форма размещения</title>
           <FormStepOne
             onNext={handleNextStep}
             initialValues={formData}
             setFormData={setFormData}
           />
+          </>
         );
       case 2:
         if (formData.type === ItemTypes.REAL_ESTATE) {
           return (
+            <>
+            <title>{ItemTypes.REAL_ESTATE}</title>
             <RealEstateForm
               onPrevious={handlePreviousStep}
               onSubmit={handleSubmit}
               initialValues={formData}
             />
+            </>
           );
         } else if (formData.type === ItemTypes.AUTO) {
           return (
+            <>
+            <title>{ItemTypes.AUTO}</title>
             <AutoForm
               onPrevious={handlePreviousStep}
               onSubmit={handleSubmit}
               initialValues={formData}
             />
+            </>
           );
         } else if (formData.type === ItemTypes.SERVICES) {
           return (
+            <>
+            <title>{ItemTypes.SERVICES}</title>
             <ServicesForm
               onPrevious={handlePreviousStep}
               onSubmit={handleSubmit}
               initialValues={formData}
             />
+            </>
           );
         } else {
           return <div>Please select an option in the first step.</div>;

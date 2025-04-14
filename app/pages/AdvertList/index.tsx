@@ -28,6 +28,7 @@ const AdvertListing: React.FC = () => {
 
   return (
     <div style={{ padding: 20, maxWidth: 1200, margin: '20px auto' }}>
+      <title>Список объявлений</title>
       <Flex wrap justify="space-between">
         <Title level={3} style={{ textAlign: 'center', marginBottom: 20 }}>
           Список объявлений
