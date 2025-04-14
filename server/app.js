@@ -5,19 +5,18 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { ItemTypes } from './ItemTypes.js';
+import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
+
+const PORT = process.env.PORT || 3000;
 
 app.use(
   cors({
     origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'x-requested-with',
-    ],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with'],
   })
 );
 
@@ -49,14 +48,38 @@ const upload = multer({
 });
 
 // In-memory хранилище для объявлений
-let items = [];
+// let items = [];
 
-const makeCounter = () => {
-  let count = 0;
-  return () => count++;
-};
+const DATA_FILE = './data/adverts.json';
 
-const itemsIdCounter = makeCounter();
+if (!fs.existsSync(DATA_FILE)) {
+  fs.writeFileSync(DATA_FILE, '[]', 'utf-8');
+}
+
+
+function readData() {
+  try {
+    const rawData = fs.readFileSync(DATA_FILE, 'utf-8');
+    return JSON.parse(rawData);
+  } catch (error) {
+    if (error.code === 'ENOENT' || error instanceof SyntaxError) {
+      return [];
+    }
+  }
+}
+
+function writeData(data) {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
+}
+
+let items = readData();
+
+// const makeCounter = () => {
+//   let count = 0;
+//   return () => count++;
+// };
+
+// const itemsIdCounter = makeCounter();
 
 // Upload endpoint
 app.post('/upload', upload.single('file'), (req, res) => {
@@ -107,7 +130,7 @@ app.post('/items', (req, res) => {
   }
 
   const item = {
-    id: itemsIdCounter(),
+    id: uuidv4(),
     name,
     description,
     location,
@@ -116,6 +139,7 @@ app.post('/items', (req, res) => {
   };
 
   items.push(item);
+  writeData(items);
   res.status(201).json(item);
 });
 
@@ -127,7 +151,7 @@ app.get('/items', (req, res) => {
 
 // Получение объявления по его id
 app.get('/items/:id', (req, res) => {
-  const item = items.find((i) => i.id === parseInt(req.params.id, 10));
+  const item = items.find((i) => i.id === req.params.id);
   if (item) {
     res.json(item);
   } else {
@@ -140,6 +164,7 @@ app.put('/items/:id', (req, res) => {
   const item = items.find((i) => i.id === parseInt(req.params.id, 10));
   if (item) {
     Object.assign(item, req.body);
+    writeData(items);
     res.json(item);
   } else {
     res.status(404).send('Item not found');
@@ -153,13 +178,12 @@ app.delete('/items/:id', (req, res) => {
   );
   if (itemIndex !== -1) {
     items.splice(itemIndex, 1);
+    writeData(items);
     res.status(204).send();
   } else {
     res.status(404).send('Item not found');
   }
 });
-
-const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
