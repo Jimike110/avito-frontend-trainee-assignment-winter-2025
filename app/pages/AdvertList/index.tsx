@@ -51,7 +51,6 @@ const AdvertListing: React.FC = () => {
         pagination={{ position, align, pageSize: 5 }}
         dataSource={ReversedData}
         renderItem={(item: AdvertItem) => {
-          console.log(item);
           return (
             <List.Item style={{ padding: '10px 0' }}>
               <Card loading={loading} style={{ width: '100%' }}>

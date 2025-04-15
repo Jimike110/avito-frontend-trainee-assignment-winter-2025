@@ -44,7 +44,6 @@ const MultiStepForm = () => {
   }, [formData]);
 
   const handleNextStep = (values: BaseFormData) => {
-    console.log('handleNextStep values:', values);
     setFormData({ ...values });
     setCurrentStep(2);
   };
@@ -55,7 +54,6 @@ const MultiStepForm = () => {
 
   const handleSubmit = (stepData: any) => {
     setFormData({ ...formData, ...stepData });
-    console.log('Final Form Data: ', { ...formData, stepData });
     mutate({ ...formData, ...stepData });
   };
 

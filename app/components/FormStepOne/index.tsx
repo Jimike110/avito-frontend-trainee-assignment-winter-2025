@@ -78,7 +78,6 @@ const FormStepOne: React.FC<FormStep1Props> = ({
   };
 
   const onFinish = (values: BaseFormData) => {
-    console.log('Form values on finish:', values);
     onNext(values);
   };
 

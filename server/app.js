@@ -144,7 +144,6 @@ app.post('/items', (req, res) => {
 
 // Получение всех объявлений
 app.get('/items', (req, res) => {
-  console.log('Получение');
   res.json(items);
 });
 
