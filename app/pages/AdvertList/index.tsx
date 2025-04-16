@@ -1,11 +1,21 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Card, Flex, Image, List, Tag } from 'antd';
+import {
+  Button,
+  Card,
+  Flex,
+  Image,
+  List,
+  Select,
+  SelectProps,
+  Tag,
+} from 'antd';
 import Title from 'antd/es/typography/Title';
 import { Link } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAdverts } from '../../api/api';
 import { AdvertItem, typeColors } from '../../types/form';
+import { ItemTypes } from '../../types/ItemTypes';
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
 type PaginationAlign = 'start' | 'center' | 'end';
@@ -25,6 +35,35 @@ const AdvertListing: React.FC = () => {
       return [...data].reverse();
     } else return undefined;
   }, [data]);
+
+  const options: SelectProps['options'] = [
+    {
+      label: ItemTypes.AUTO,
+      value: ItemTypes.AUTO,
+    },
+    {
+      label: ItemTypes.REAL_ESTATE,
+      value: ItemTypes.REAL_ESTATE,
+    },
+    {
+      label: ItemTypes.SERVICES,
+      value: ItemTypes.SERVICES,
+    },
+  ];
+
+  const [value, setValue] = useState<string[]>([]);
+
+  const handleChange = (newValue: string[]) => {
+    setValue(newValue);
+  };
+
+  const filteredData = useMemo(() => {
+    if (!ReversedData) return [];
+
+    if (!value || value.length === 0) return ReversedData;
+
+    return ReversedData.filter((item) => value.includes(item.type));
+  }, [ReversedData, value]);
 
   return (
     <div style={{ padding: 20, maxWidth: 1200, margin: '20px auto' }}>
@@ -46,10 +85,22 @@ const AdvertListing: React.FC = () => {
           </Button>
         </Link>
       </Flex>
+      <Flex>
+        <Select
+          mode="multiple"
+          allowClear
+          placeholder="Фильтры"
+          onChange={handleChange}
+          style={{ width: '50%', maxWidth: 150 }}
+          options={options}
+        />
+        {value &&
+          value.map((e) => <Select style={{ width: '50%', maxWidth: 150 }} />)}
+      </Flex>
       <List
         loading={isLoading}
         pagination={{ position, align, pageSize: 5 }}
-        dataSource={ReversedData}
+        dataSource={filteredData}
         renderItem={(item: AdvertItem) => {
           return (
             <List.Item style={{ padding: '10px 0' }}>
