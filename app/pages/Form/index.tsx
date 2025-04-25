@@ -79,11 +79,15 @@ const MultiStepForm = ({ data, editing = false }) => {
       case 1:
         return (
           <>
-            <title>Форма размещения</title>
+            <title>
+              {editing ? 'Редактировать объявление' : 'Форма размещения'}
+            </title>
+
             <FormStepOne
               onNext={handleNextStep}
               initialValues={formData}
               setFormData={setFormData}
+              editing={editing}
             />
           </>
         );

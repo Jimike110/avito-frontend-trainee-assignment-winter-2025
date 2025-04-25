@@ -13,6 +13,7 @@ interface FormStep1Props {
   onNext: (values: BaseFormData) => void;
   initialValues?: BaseFormData;
   setFormData: any;
+  editing: boolean;
 }
 
 const onFinishFailed: FormProps<BaseFormData>['onFinishFailed'] = (
@@ -29,6 +30,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
   onNext,
   initialValues,
   setFormData,
+  editing,
 }) => {
   const [form] = useForm<BaseFormData>();
 
@@ -89,7 +91,12 @@ const FormStepOne: React.FC<FormStep1Props> = ({
       align="center"
       justify="center"
     >
-      <Title level={3}>Форма размещения</Title>
+      {
+        <Title level={3}>
+          {editing ? 'Редактировать объявление' : 'Форма размещения'}
+        </Title>
+      }
+
       <Card variant="borderless">
         <Form
           name="basic"
