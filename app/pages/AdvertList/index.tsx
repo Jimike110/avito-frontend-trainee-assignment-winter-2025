@@ -101,31 +101,42 @@ const AdvertListing: React.FC = () => {
           </Button>
         </Link>
       </Flex>
-      <Flex align="flex-start" gap={6} style={{ width: '100%' }} wrap>
-        <Flex gap={6} wrap style={{ flex: 1, minWidth: 0 }}>
+      <Flex
+        justify="flex-end"
+        align="flex-start"
+        gap={6}
+        style={{ width: '100%' }}
+        wrap
+      >
+        <Flex gap={6} wrap justify="flex-end" align="flex-start">
+          <Search
+            placeholder="Поиск по названию"
+            allowClear
+            onChange={(e) => onSearch(e.target.value)}
+            onSearch={onSearch}
+            style={{
+              minWidth: 300,
+              maxWidth: 300,
+              marginLeft: 'auto',
+              flexShrink: 1,
+              flex: 1,
+            }}
+          />
           <Select
             mode="multiple"
             allowClear
             placeholder="Фильтры"
             onChange={handleChange}
-            style={{ width: 200, flex: 1, maxWidth: 300 }}
+            style={{ minWidth: 300, maxWidth: 500 }}
             options={options}
           />
+        </Flex>
+
+        <Flex gap={6} wrap justify="flex-end">
           {value.map((e) => (
             <Select key={e} placeholder={e} style={{ width: 150 }} />
           ))}
         </Flex>
-        <Search
-          placeholder="Поиск по названию"
-          allowClear
-          onChange={(e) => onSearch(e.target.value)}
-          onSearch={onSearch}
-          style={{
-            width: 200,
-            marginLeft: 'auto',
-            flexShrink: 0,
-          }}
-        />
       </Flex>
       <List
         loading={isLoading}
