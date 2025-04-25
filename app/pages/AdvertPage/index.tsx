@@ -29,7 +29,7 @@ const { Content } = Layout;
 const { Title, Paragraph } = Typography;
 
 const AdvertPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
 
   const { isLoading, data } = useQuery<AdvertItem>({
@@ -39,8 +39,8 @@ const AdvertPage = () => {
   });
 
   const { mutate } = useMutation({
-    mutationFn: (payload) => {
-      return deleteAdvertById(id);
+    mutationFn: () => {
+      return deleteAdvertById(id as string);
     },
     onSuccess: () => {
       navigate('/list');
