@@ -16,6 +16,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchAdverts } from '../../api/api';
 import { AdvertItem, typeColors } from '../../types/form';
 import { ItemTypes } from '../../types/ItemTypes';
+import Search, { SearchProps } from 'antd/es/input/Search';
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
 type PaginationAlign = 'start' | 'center' | 'end';
@@ -52,18 +53,33 @@ const AdvertListing: React.FC = () => {
   ];
 
   const [value, setValue] = useState<string[]>([]);
+  const [searchValue, setSearchValue] = useState<string>('');
 
   const handleChange = (newValue: string[]) => {
     setValue(newValue);
   };
 
+  const onSearch: SearchProps['onSearch'] = (value) => {
+    setSearchValue(value.toLowerCase());
+  };
+
   const filteredData = useMemo(() => {
     if (!ReversedData) return [];
 
-    if (!value || value.length === 0) return ReversedData;
+    let filtered = ReversedData;
 
-    return ReversedData.filter((item) => value.includes(item.type));
-  }, [ReversedData, value]);
+    if (value && value.length > 0) {
+      filtered = filtered.filter((item) => value.includes(item.type));
+    }
+
+    if (searchValue) {
+      filtered = filtered.filter((item) =>
+        item.name.toLowerCase().includes(searchValue)
+      );
+    }
+
+    return filtered;
+  }, [ReversedData, value, searchValue]);
 
   return (
     <div style={{ padding: 20, maxWidth: 1200, margin: '20px auto' }}>
@@ -85,17 +101,31 @@ const AdvertListing: React.FC = () => {
           </Button>
         </Link>
       </Flex>
-      <Flex>
-        <Select
-          mode="multiple"
+      <Flex align="flex-start" gap={6} style={{ width: '100%' }} wrap>
+        <Flex gap={6} wrap style={{ flex: 1, minWidth: 0 }}>
+          <Select
+            mode="multiple"
+            allowClear
+            placeholder="Фильтры"
+            onChange={handleChange}
+            style={{ width: 200, flex: 1, maxWidth: 300 }}
+            options={options}
+          />
+          {value.map((e) => (
+            <Select key={e} placeholder={e} style={{ width: 150 }} />
+          ))}
+        </Flex>
+        <Search
+          placeholder="Поиск по названию"
           allowClear
-          placeholder="Фильтры"
-          onChange={handleChange}
-          style={{ width: '50%', maxWidth: 150 }}
-          options={options}
+          onChange={(e) => onSearch(e.target.value)}
+          onSearch={onSearch}
+          style={{
+            width: 200,
+            marginLeft: 'auto',
+            flexShrink: 0,
+          }}
         />
-        {value &&
-          value.map((e) => <Select style={{ width: '50%', maxWidth: 150 }} />)}
       </Flex>
       <List
         loading={isLoading}
@@ -120,7 +150,7 @@ const AdvertListing: React.FC = () => {
                     <Image
                       width={'100%'}
                       height={'auto'}
-                      style={{ borderRadius: 10 }}
+                      style={{ borderRadius: 10, objectFit: 'cover' }}
                       src={
                         item.picture
                           ? item.picture.length > 0
