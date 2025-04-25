@@ -4,7 +4,7 @@ import RealEstateForm from '../../components/FormStepTwo/RealEstateForm';
 import { ItemTypes } from '../../types/ItemTypes.js';
 import AutoForm from '../../components/FormStepTwo/AutoForm';
 import ServicesForm from '../../components/FormStepTwo/ServicesForm';
-import { AdvertItem, BaseFormData, StepTwoFormProps } from '../../types/form';
+import { AdvertItem, BaseFormData } from '../../types/form';
 import { useMutation } from '@tanstack/react-query';
 import { createAdvert, updateAdvertById } from '../../api/api';
 import { Link, useNavigate } from 'react-router-dom';
@@ -81,7 +81,7 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ data, editing = false }) 
     setCurrentStep((prevStep) => prevStep - 1);
   };
 
-  const handleSubmit = (stepData: any) => {
+  const handleSubmit = (stepData: AdvertItem) => {
     const updated = { ...formData, ...stepData };
     setFormData(updated);
     mutate(updated);

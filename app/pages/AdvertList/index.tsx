@@ -22,11 +22,9 @@ type PaginationPosition = 'top' | 'bottom' | 'both';
 type PaginationAlign = 'start' | 'center' | 'end';
 
 const AdvertListing: React.FC = () => {
-  const [position, setPosition] = useState<PaginationPosition>('bottom');
-  const [align, setAlign] = useState<PaginationAlign>('center');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { isLoading, isError, data, error } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ['items'],
     queryFn: fetchAdverts,
   });
@@ -140,7 +138,7 @@ const AdvertListing: React.FC = () => {
       </Flex>
       <List
         loading={isLoading}
-        pagination={{ position, align, pageSize: 5 }}
+        pagination={{ position: 'bottom', align: 'center', pageSize: 5 }}
         dataSource={filteredData}
         renderItem={(item: AdvertItem) => {
           return (

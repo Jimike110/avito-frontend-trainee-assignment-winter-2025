@@ -13,7 +13,7 @@ import type { UploadRequestOption } from 'rc-upload/lib/interface';
 interface FormStep1Props {
   onNext: (values: BaseFormData) => void;
   initialValues?: BaseFormData;
-  setFormData: any;
+  setFormData: React.Dispatch<React.SetStateAction<BaseFormData>>;
   editing: boolean;
 }
 
@@ -30,7 +30,6 @@ const handleChange = (value: string) => {
 const FormStepOne: React.FC<FormStep1Props> = ({
   onNext,
   initialValues,
-  setFormData,
   editing,
 }) => {
   const [form] = useForm<BaseFormData>();
@@ -42,10 +41,10 @@ const FormStepOne: React.FC<FormStep1Props> = ({
   }, [form, initialValues]);
 
   const customRequest = async (options: UploadRequestOption) => {
-    const { file, onSuccess, onError, onProgress, headers, withCredentials } =
+    const { file, onSuccess, onError, headers, withCredentials } =
       options;
     const formData = new FormData();
-    formData.append('file', file as any);
+    formData.append('file', file as File);
 
     try {
       const response = await fetch(`${API_BASE_URL}/upload`, {
@@ -59,7 +58,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
         const data = await response.json();
         if (onSuccess) {
           onSuccess(data);
-          message.success(`${(file as any)?.name} file uploaded successfully`); // Safe access to name
+          message.success(`${(file as File)?.name} file uploaded successfully`); // Safe access to name
         }
       } else {
         const errorData = await response.json();
@@ -71,7 +70,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
             errorData
           );
           message.error(
-            `${(file as any)?.name} file upload failed: ${errorData?.error || response.statusText}` // Safe access to name
+            `${(file as File)?.name} file upload failed: ${errorData?.error || response.statusText}` // Safe access to name
           );
         }
       }
@@ -79,7 +78,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
       if (onError) {
         onError(error);
         message.error(
-          `${(file as any)?.name} file upload failed: ${error.message}`
+          `${(file as File)?.name} file upload failed: ${error.message}`
         );
       }
     }

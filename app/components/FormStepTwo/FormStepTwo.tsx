@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Form, Row } from 'antd';
+import { Button, Card, Flex, Form } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React, { useEffect } from 'react';
 import { StepTwoFormProps } from '../../types/form';

@@ -51,7 +51,7 @@ const AdvertPage = () => {
     },
   });
 
-  const confirm: PopconfirmProps['onConfirm'] = (e) => {
+  const confirm: PopconfirmProps['onConfirm'] = () => {
     mutate();
     message.success('Объявление успешно удалено');
   };
