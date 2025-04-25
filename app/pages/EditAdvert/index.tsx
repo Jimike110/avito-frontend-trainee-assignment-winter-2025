@@ -1,7 +1,6 @@
 import React from 'react';
 import MultiStepForm from '../Form';
-import { useLocation, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useLocation } from 'react-router-dom';
 
 const EditAdvert = () => {
   const location = useLocation();

@@ -25,8 +25,9 @@ const FormStepTwo = <T,>({
   }, [form, initialValues]);
 
 
-  const onPreviousClick = (values: any) => {
-    onPrevious(values)
+  const onPreviousClick = () => {
+    const values = form.getFieldsValue(true);
+    onPrevious(values);
   }
   const onFinish = (values: any) => onSubmit(values);
   const onFinishFailed = (errorInfo: any) => console.log('Failed:', errorInfo);

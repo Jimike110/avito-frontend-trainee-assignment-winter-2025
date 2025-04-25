@@ -64,7 +64,8 @@ const MultiStepForm = ({ data, editing = false }) => {
     setCurrentStep(2);
   };
 
-  const handlePreviousStep = () => {
+  const handlePreviousStep = (values) => {
+    setFormData((prev) => ({ ...prev, ...values }));
     setCurrentStep((prevStep) => prevStep - 1);
   };
 
@@ -159,7 +160,7 @@ const MultiStepForm = ({ data, editing = false }) => {
           </Button>
         </Link>
       </div>
-  
+
       <div
         style={{
           flex: 1,
@@ -173,7 +174,6 @@ const MultiStepForm = ({ data, editing = false }) => {
       </div>
     </div>
   );
-  
 };
 
 export default MultiStepForm;

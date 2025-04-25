@@ -4,7 +4,6 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Auth/Login';
 import Signup from './pages/Auth/Signup';
 import Home from './pages/Home';
-import Test from './pages/Test';
 import MultiStepForm from './pages/Form';
 import AdvertListing from './pages/AdvertList';
 import AdvertPage from './pages/AdvertPage';
@@ -20,7 +19,6 @@ const App: React.FC = () => {
         path="/form"
         element={<MultiStepForm data={''} editing={false} />}
       />
-      <Route path="/test" element={<Test />} />
       <Route path="/list" element={<AdvertListing />} />
       <Route path="/item/:id" element={<AdvertPage />} />
       <Route path="/edit/:id" element={<EditAdvert />} />
