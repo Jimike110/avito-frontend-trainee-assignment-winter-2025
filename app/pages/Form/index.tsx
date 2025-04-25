@@ -47,6 +47,17 @@ const MultiStepForm = ({ data, editing = false }) => {
       setTimeout(() => {
         navigate('/list');
       }, 1500);
+
+      if (!editing) {
+        setCurrentStep(1);
+        setFormData({
+          name: '',
+          description: '',
+          location: '',
+          type: undefined,
+          picture: undefined,
+        });
+      }
     },
     onError: (err) => {
       console.error('Error creating advert:', err);
