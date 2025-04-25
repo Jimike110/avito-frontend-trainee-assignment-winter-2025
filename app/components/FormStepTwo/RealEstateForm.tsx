@@ -26,24 +26,21 @@ const RealEstateForm: React.FC<StepTwoFormProps> = (props) => {
         name="area"
         rules={[{ required: true }]}
       >
-        {' '}
-        <InputNumber suffix="кв. м" style={{ width: '100%' }} />{' '}
+        <InputNumber suffix="кв. м" style={{ width: '100%' }} />
       </Form.Item>
       <Form.Item<RealEstate>
         label="Количество комнат"
         name="rooms"
         rules={[{ required: true }]}
       >
-        {' '}
-        <InputNumber style={{ width: '100%' }} />{' '}
+        <InputNumber style={{ width: '100%' }} />
       </Form.Item>
       <Form.Item<RealEstate>
         label="Цена"
         name="price"
         rules={[{ required: true }]}
       >
-        {' '}
-        <InputNumber suffix="₽" style={{ width: '100%' }} />{' '}
+        <InputNumber suffix="₽" style={{ width: '100%' }} />
       </Form.Item>
     </FormStepTwo>
   );

@@ -54,29 +54,26 @@ const AutoForm: React.FC<StepTwoFormProps> = (props) => {
       </Form.Item>
 
       <Form.Item<Auto> label="Модель" name="model" rules={[{ required: true }]}>
-        {' '}
-        <Input />{' '}
+        <Input />
       </Form.Item>
       <Form.Item<Auto>
         label="Год выпуска"
         name="year"
         rules={[{ required: true }]}
       >
-        {' '}
         <InputNumber
           min={1900}
           max={new Date().getFullYear()}
           suffix="г."
           style={{ width: '100%' }}
-        />{' '}
+        />
       </Form.Item>
       <Form.Item<Auto>
         label="Пробег"
         name="mileage"
         rules={[{ required: true }]}
       >
-        {' '}
-        <InputNumber suffix="км." style={{ width: '100%' }} />{' '}
+        <InputNumber suffix="км." style={{ width: '100%' }} />
       </Form.Item>
     </FormStepTwo>
   );

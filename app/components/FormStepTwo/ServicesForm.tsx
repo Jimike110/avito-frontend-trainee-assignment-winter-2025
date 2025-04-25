@@ -25,20 +25,17 @@ const ServicesForm: React.FC<StepTwoFormProps> = (props) => {
         name="experience"
         rules={[{ required: true }]}
       >
-        {' '}
-        <InputNumber min={0} style={{ width: '100%' }} />{' '}
+        <InputNumber min={0} style={{ width: '100%' }} />
       </Form.Item>
       <Form.Item<Services>
         label="Стоимость"
         name="cost"
         rules={[{ required: true }]}
       >
-        {' '}
-        <InputNumber min={0} suffix="₽" style={{ width: '100%' }} />{' '}
+        <InputNumber min={0} suffix="₽" style={{ width: '100%' }} />
       </Form.Item>
       <Form.Item<Services> label="График работы" name="workHours">
-        {' '}
-        <Input style={{ width: '100%' }} />{' '}
+        <Input style={{ width: '100%' }} />
       </Form.Item>
     </FormStepTwo>
   );
