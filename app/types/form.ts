@@ -51,9 +51,9 @@ export const typeColors = {
 };
 
 export interface StepTwoFormProps {
-  onPrevious: (data: any) => void;
-  onSubmit: (data: any) => void;
-  initialValues?: Record<string, any>;
+  onPrevious: (data: AdvertItem) => void;
+  onSubmit: (data: AdvertItem) => void;
+  initialValues?: BaseFormData;
 }
 
 interface PictureItem {

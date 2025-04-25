@@ -17,7 +17,7 @@ const App: React.FC = () => {
       <Route index element={<Home />} />
       <Route
         path="/form"
-        element={<MultiStepForm data={''} editing={false} />}
+        element={<MultiStepForm />}
       />
       <Route path="/list" element={<AdvertListing />} />
       <Route path="/item" element={<Navigate to="/list" />} />

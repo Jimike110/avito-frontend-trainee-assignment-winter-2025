@@ -5,7 +5,6 @@ import { StepTwoFormProps } from '../../types/form';
 
 interface FormWrapperProps<T> extends StepTwoFormProps {
   title: string;
-  initialValues?: Record<string, any>;
   children: React.ReactNode;
 }
 
