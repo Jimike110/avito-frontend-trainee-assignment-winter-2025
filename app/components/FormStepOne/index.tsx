@@ -86,29 +86,30 @@ const FormStepOne: React.FC<FormStep1Props> = ({
   return (
     <Flex
       id="base-form"
-      className="container"
       vertical
       align="center"
       justify="center"
     >
-      {
-        <Title level={3}>
-          {editing ? 'Редактировать объявление' : 'Форма размещения'}
-        </Title>
-      }
+      <Title level={2} style={{ marginBottom: '2rem', textAlign: 'center' }}>
+        {editing ? 'Редактировать объявление' : 'Форма размещения'}
+      </Title>
 
-      <Card variant="borderless">
+      <Card
+        variant="borderless"
+        style={{
+          width: '100%',
+          maxWidth: 600,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        }}
+      >
         <Form
           name="basic"
           form={form}
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 900 }}
+          layout="vertical"
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
-          labelAlign="left"
         >
           <Form.Item<BaseFormData>
             label="Название"
@@ -121,7 +122,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
           </Form.Item>
 
           <Form.Item
-            label={'Описание'}
+            label="Описание"
             name="description"
             rules={[
               { required: true, message: 'Пожалуйста, введите описание!' },
@@ -141,7 +142,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
           </Form.Item>
 
           <Form.Item<BaseFormData>
-            label={'Фото'}
+            label="Фото"
             name="picture"
             valuePropName="fileList"
             getValueFromEvent={normFile}
@@ -149,7 +150,6 @@ const FormStepOne: React.FC<FormStep1Props> = ({
             <Upload
               name="picture"
               listType="picture"
-              // defaultFileList={initialValues?.picture?.fileList}
               customRequest={customRequest}
             >
               <Button icon={<UploadOutlined />}>Upload</Button>
@@ -157,7 +157,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
           </Form.Item>
 
           <Form.Item<BaseFormData>
-            label={'Категория'}
+            label="Категория"
             name="type"
             rules={[
               { required: true, message: 'Пожалуйста, выберите категорию!' },
@@ -167,15 +167,9 @@ const FormStepOne: React.FC<FormStep1Props> = ({
               style={{ width: '100%' }}
               onChange={handleChange}
               options={[
-                {
-                  value: `${ItemTypes.REAL_ESTATE}`,
-                  label: `${ItemTypes.REAL_ESTATE}`,
-                },
-                { value: `${ItemTypes.AUTO}`, label: `${ItemTypes.AUTO}` },
-                {
-                  value: `${ItemTypes.SERVICES}`,
-                  label: `${ItemTypes.SERVICES}`,
-                },
+                { value: ItemTypes.REAL_ESTATE, label: ItemTypes.REAL_ESTATE },
+                { value: ItemTypes.AUTO, label: ItemTypes.AUTO },
+                { value: ItemTypes.SERVICES, label: ItemTypes.SERVICES },
               ]}
             />
           </Form.Item>
@@ -185,7 +179,8 @@ const FormStepOne: React.FC<FormStep1Props> = ({
               size="large"
               type="primary"
               htmlType="submit"
-              style={{ marginBlock: '30px' }}
+              block
+              style={{ marginTop: '20px' }}
             >
               Next
             </Button>
