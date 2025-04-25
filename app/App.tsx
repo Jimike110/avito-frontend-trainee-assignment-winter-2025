@@ -15,10 +15,7 @@ const App: React.FC = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route index element={<Home />} />
-      <Route
-        path="/form"
-        element={<MultiStepForm />}
-      />
+      <Route path="/form" element={<MultiStepForm />} />
       <Route path="/list" element={<AdvertListing />} />
       <Route path="/item" element={<Navigate to="/list" />} />
       <Route path="/item/:id" element={<AdvertPage />} />

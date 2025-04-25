@@ -12,8 +12,13 @@ export const fetchAdverts = async (): Promise<AdvertItem[]> => {
   return response.data;
 };
 
-export const createAdvert = async (advertData: AdvertItem): Promise<AdvertItem> => {
-  const response: AxiosResponse<AdvertItem> = await api.post('/items', advertData);
+export const createAdvert = async (
+  advertData: AdvertItem
+): Promise<AdvertItem> => {
+  const response: AxiosResponse<AdvertItem> = await api.post(
+    '/items',
+    advertData
+  );
   return response.data;
 };
 
@@ -23,7 +28,10 @@ export const fetchAdvertById = async (id: string): Promise<AdvertItem> => {
 };
 
 export const updateAdvertById = async (id: string, advertData: AdvertItem) => {
-  const response: AxiosResponse<AdvertItem> = await api.put(`/items/${id}`, advertData);
+  const response: AxiosResponse<AdvertItem> = await api.put(
+    `/items/${id}`,
+    advertData
+  );
   return response.data;
 };
 

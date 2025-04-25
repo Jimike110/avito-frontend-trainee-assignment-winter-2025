@@ -15,11 +15,13 @@ interface MultiStepFormProps {
   editing?: boolean;
 }
 
-const MultiStepForm: React.FC<MultiStepFormProps> = ({ data, editing = false }) => {
+const MultiStepForm: React.FC<MultiStepFormProps> = ({
+  data,
+  editing = false,
+}) => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<BaseFormData>(
-    () =>
-      data || JSON.parse(localStorage.getItem('multiStepFormData') || '{}')
+    () => data || JSON.parse(localStorage.getItem('multiStepFormData') || '{}')
   );
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -37,7 +39,7 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ data, editing = false }) 
   const { mutate } = useMutation({
     mutationFn: (payload: AdvertItem) => {
       return editing && data?.id
-        ?  updateAdvertById(data.id, payload)
+        ? updateAdvertById(data.id, payload)
         : createAdvert(payload);
     },
     onSuccess: () => {

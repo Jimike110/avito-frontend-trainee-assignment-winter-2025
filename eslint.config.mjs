@@ -1,10 +1,10 @@
-import js from '@eslint/js'
-import tseslint from 'typescript-eslint'
-import globals from 'globals'
+import js from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import globals from 'globals';
 
 // Remove whitespace from global keys
 const cleanGlobals = (obj) =>
-  Object.fromEntries(Object.entries(obj).map(([k, v]) => [k.trim(), v]))
+  Object.fromEntries(Object.entries(obj).map(([k, v]) => [k.trim(), v]));
 
 export default [
   {
@@ -27,7 +27,10 @@ export default [
   ...tseslint.configs.recommendedTypeChecked,
   {
     rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
+      ],
     },
   },
-]
+];

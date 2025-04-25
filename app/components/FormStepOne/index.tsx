@@ -41,8 +41,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
   }, [form, initialValues]);
 
   const customRequest = async (options: UploadRequestOption) => {
-    const { file, onSuccess, onError, headers, withCredentials } =
-      options;
+    const { file, onSuccess, onError, headers, withCredentials } = options;
     const formData = new FormData();
     formData.append('file', file as File);
 
