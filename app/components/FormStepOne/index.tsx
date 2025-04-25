@@ -8,6 +8,7 @@ import { ItemTypes } from '../../types/ItemTypes.js';
 import { useForm } from 'antd/es/form/Form';
 import { BaseFormData } from '../../types/form';
 import { API_BASE_URL } from '../../api/api.js';
+import type { UploadRequestOption } from 'rc-upload/lib/interface';
 
 interface FormStep1Props {
   onNext: (values: BaseFormData) => void;
@@ -40,35 +41,47 @@ const FormStepOne: React.FC<FormStep1Props> = ({
     }
   }, [form, initialValues]);
 
-  const customRequest = async (options) => {
-    const { file, onSuccess, onError } = options;
+  const customRequest = async (options: UploadRequestOption) => {
+    const { file, onSuccess, onError, onProgress, headers, withCredentials } =
+      options;
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', file as any);
 
     try {
       const response = await fetch(`${API_BASE_URL}/upload`, {
         method: 'POST',
         body: formData,
+        headers,
+        credentials: withCredentials ? 'include' : undefined,
       });
 
       if (response.ok) {
         const data = await response.json();
-        onSuccess(data);
-        message.success(`${file.name} file uploaded successfully`);
+        if (onSuccess) {
+          onSuccess(data);
+          message.success(`${(file as any)?.name} file uploaded successfully`); // Safe access to name
+        }
       } else {
         const errorData = await response.json();
-        onError(
-          new Error(
-            errorData?.error || `Upload failed with status ${response.status}`
-          )
-        );
+        if (onError) {
+          onError(
+            new Error(
+              errorData?.error || `Upload failed with status ${response.status}`
+            ),
+            errorData
+          );
+          message.error(
+            `${(file as any)?.name} file upload failed: ${errorData?.error || response.statusText}` // Safe access to name
+          );
+        }
+      }
+    } catch (error: any) {
+      if (onError) {
+        onError(error);
         message.error(
-          `${file.name} file upload failed: ${errorData?.error || response.statusText}`
+          `${(file as any)?.name} file upload failed: ${error.message}`
         );
       }
-    } catch (error) {
-      onError(error);
-      message.error(`${file.name} file upload failed: ${error.message}`);
     }
   };
 
@@ -84,12 +97,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
   };
 
   return (
-    <Flex
-      id="base-form"
-      vertical
-      align="center"
-      justify="center"
-    >
+    <Flex id="base-form" vertical align="center" justify="center">
       <Title level={2} style={{ marginBottom: '2rem', textAlign: 'center' }}>
         {editing ? 'Редактировать объявление' : 'Форма размещения'}
       </Title>
