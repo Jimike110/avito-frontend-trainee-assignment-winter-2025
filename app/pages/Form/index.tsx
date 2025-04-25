@@ -6,31 +6,45 @@ import AutoForm from '../../components/FormStepTwo/AutoForm';
 import ServicesForm from '../../components/FormStepTwo/ServicesForm';
 import { BaseFormData } from '../../types/form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createAdvert } from '../../api/api';
+import { createAdvert, updateAdvertById } from '../../api/api';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'antd';
 
-const MultiStepForm = () => {
+const MultiStepForm = ({ data, editing = false }) => {
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState<BaseFormData>(() => {
-    return JSON.parse(localStorage.getItem('multiStepFormData') || '{}');
-  });
+  const [formData, setFormData] = useState<BaseFormData>(
+    () =>
+      // JSON.parse(
+      //   localStorage.getItem('advertData') ||
+      //     localStorage.getItem('multiStepFormData') ||
+      //     '{}'
+      // )
+      data || JSON.parse(localStorage.getItem('multiStepFormData') || '{}')
+  );
+  console.log(formData);
+
   const navigate = useNavigate();
 
   const { mutate } = useMutation({
-    mutationFn: createAdvert,
+    mutationFn: (payload) => {
+      return editing
+        ? updateAdvertById(data.id, payload)
+        : createAdvert(payload);
+    },
     onSuccess: () => {
       console.log('Advert created successfully!');
       localStorage.removeItem('multiStepFormData');
       alert('Form submitted!');
-      setCurrentStep(1);
-      setFormData({
-        name: '',
-        description: '',
-        location: '',
-        type: undefined,
-        picture: undefined,
-      });
+      if (!editing) {
+        setCurrentStep(1);
+        setFormData({
+          name: '',
+          description: '',
+          location: '',
+          type: undefined,
+          picture: undefined,
+        });
+      }
       navigate('/list');
     },
     onError: (err) => {
@@ -40,11 +54,13 @@ const MultiStepForm = () => {
   });
 
   useEffect(() => {
-    localStorage.setItem('multiStepFormData', JSON.stringify(formData));
-  }, [formData]);
+    if (!editing) {
+      localStorage.setItem('multiStepFormData', JSON.stringify(formData));
+    }
+  }, [formData, editing]);
 
   const handleNextStep = (values: BaseFormData) => {
-    setFormData({ ...values });
+    setFormData((prev) => ({ ...prev, ...values }));
     setCurrentStep(2);
   };
 
@@ -53,8 +69,9 @@ const MultiStepForm = () => {
   };
 
   const handleSubmit = (stepData: any) => {
-    setFormData({ ...formData, ...stepData });
-    mutate({ ...formData, ...stepData });
+    const updated = { ...formData, ...stepData };
+    setFormData(updated);
+    mutate(updated);
   };
 
   const renderForm = () => {
@@ -62,46 +79,46 @@ const MultiStepForm = () => {
       case 1:
         return (
           <>
-          <title>Форма размещения</title>
-          <FormStepOne
-            onNext={handleNextStep}
-            initialValues={formData}
-            setFormData={setFormData}
-          />
+            <title>Форма размещения</title>
+            <FormStepOne
+              onNext={handleNextStep}
+              initialValues={formData}
+              setFormData={setFormData}
+            />
           </>
         );
       case 2:
         if (formData.type === ItemTypes.REAL_ESTATE) {
           return (
             <>
-            <title>{ItemTypes.REAL_ESTATE}</title>
-            <RealEstateForm
-              onPrevious={handlePreviousStep}
-              onSubmit={handleSubmit}
-              initialValues={formData}
-            />
+              <title>{ItemTypes.REAL_ESTATE}</title>
+              <RealEstateForm
+                onPrevious={handlePreviousStep}
+                onSubmit={handleSubmit}
+                initialValues={formData}
+              />
             </>
           );
         } else if (formData.type === ItemTypes.AUTO) {
           return (
             <>
-            <title>{ItemTypes.AUTO}</title>
-            <AutoForm
-              onPrevious={handlePreviousStep}
-              onSubmit={handleSubmit}
-              initialValues={formData}
-            />
+              <title>{ItemTypes.AUTO}</title>
+              <AutoForm
+                onPrevious={handlePreviousStep}
+                onSubmit={handleSubmit}
+                initialValues={formData}
+              />
             </>
           );
         } else if (formData.type === ItemTypes.SERVICES) {
           return (
             <>
-            <title>{ItemTypes.SERVICES}</title>
-            <ServicesForm
-              onPrevious={handlePreviousStep}
-              onSubmit={handleSubmit}
-              initialValues={formData}
-            />
+              <title>{ItemTypes.SERVICES}</title>
+              <ServicesForm
+                onPrevious={handlePreviousStep}
+                onSubmit={handleSubmit}
+                initialValues={formData}
+              />
             </>
           );
         } else {

@@ -8,6 +8,7 @@ import Test from './pages/Test';
 import MultiStepForm from './pages/Form';
 import AdvertListing from './pages/AdvertList';
 import AdvertPage from './pages/AdvertPage';
+import EditAdvert from './pages/EditAdvert';
 
 const App: React.FC = () => {
   return (
@@ -15,10 +16,11 @@ const App: React.FC = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route index element={<Home />} />
-      <Route path="/form" element={<MultiStepForm />} />
+      <Route path="/form" element={<MultiStepForm data={""} editing={false} />} />
       <Route path="/test" element={<Test />} />
       <Route path="/list" element={<AdvertListing />} />
       <Route path="/item/:id" element={<AdvertPage />} />
+      <Route path='/edit/:id' element={<EditAdvert />} />
     </Routes>
   );
 };
