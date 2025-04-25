@@ -159,7 +159,7 @@ app.get('/items/:id', (req, res) => {
 
 // Обновление объявления по его id
 app.put('/items/:id', (req, res) => {
-  const item = items.find((i) => i.id === parseInt(req.params.id, 10));
+  const item = items.find((i) => i.id === req.params.id);
   if (item) {
     Object.assign(item, req.body);
     writeData(items);
@@ -172,7 +172,7 @@ app.put('/items/:id', (req, res) => {
 // Удаление объявления по его id
 app.delete('/items/:id', (req, res) => {
   const itemIndex = items.findIndex(
-    (i) => i.id === parseInt(req.params.id, 10)
+    (i) => i.id === req.params.id
   );
   if (itemIndex !== -1) {
     items.splice(itemIndex, 1);
