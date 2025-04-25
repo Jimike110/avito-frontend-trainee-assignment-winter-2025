@@ -14,11 +14,6 @@ const MultiStepForm = ({ data, editing = false }) => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<BaseFormData>(
     () =>
-      // JSON.parse(
-      //   localStorage.getItem('advertData') ||
-      //     localStorage.getItem('multiStepFormData') ||
-      //     '{}'
-      // )
       data || JSON.parse(localStorage.getItem('multiStepFormData') || '{}')
   );
   const [messageApi, contextHolder] = message.useMessage();

@@ -1,0 +1,22 @@
+// TODO - Create a responsive layout component with header/navigation if needed.
+
+
+// TODO - Implement dynamic filters based on category selection.
+// TODO - Display up to 5 items per page using List pagination.
+
+
+// TODO - Containerize the app using Docker.
+// TODO - Add docker-compose.yml to spin up both client and server together.
+
+// TODO - Cancel in-flight queries on page change to avoid memory leaks.
+
+// TODO - Add ESLint and Prettier configuration for consistent code style.
+
+// TODO - Add unit tests for major components (e.g., form, listing).
+// TODO - Add comments and code documentation where helpful.
+
+// TODO - Push code to GitHub and include README with:
+// TODO - Setup instructions,
+// TODO - Tech stack justification,
+// TODO - Running locally (with/without Docker),
+// TODO - Demo (if deployed).
