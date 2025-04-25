@@ -8,7 +8,7 @@ import { BaseFormData } from '../../types/form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createAdvert, updateAdvertById } from '../../api/api';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 
 const MultiStepForm = ({ data, editing = false }) => {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -21,9 +21,18 @@ const MultiStepForm = ({ data, editing = false }) => {
       // )
       data || JSON.parse(localStorage.getItem('multiStepFormData') || '{}')
   );
-  console.log(formData);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const navigate = useNavigate();
+
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: editing
+        ? 'Advert updated successfully!'
+        : 'Advert created successfully!',
+    });
+  };
 
   const { mutate } = useMutation({
     mutationFn: (payload) => {
@@ -32,20 +41,12 @@ const MultiStepForm = ({ data, editing = false }) => {
         : createAdvert(payload);
     },
     onSuccess: () => {
-      console.log('Advert created successfully!');
       localStorage.removeItem('multiStepFormData');
-      alert('Form submitted!');
-      if (!editing) {
-        setCurrentStep(1);
-        setFormData({
-          name: '',
-          description: '',
-          location: '',
-          type: undefined,
-          picture: undefined,
-        });
-      }
-      navigate('/list');
+      success();
+
+      setTimeout(() => {
+        navigate('/list');
+      }, 1500);
     },
     onError: (err) => {
       console.error('Error creating advert:', err);
@@ -154,6 +155,8 @@ const MultiStepForm = ({ data, editing = false }) => {
           flexShrink: 0,
         }}
       >
+        {contextHolder}
+
         <Link to="/list">
           <Button size="large" type="primary">
             Список размещений

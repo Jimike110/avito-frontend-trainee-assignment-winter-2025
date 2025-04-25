@@ -1,33 +1,35 @@
 import js from '@eslint/js';
-import globals from 'globals';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
-import tseslint from 'typescript-eslint';
+import react from 'eslint-plugin-react';
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+export default [
+  js.configs.recommended,
   {
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommended,
-      'plugin:prettier/recommended',
-    ],
-    files: ['**/*.{ts,tsx}'],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-    },
+    files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      react,
+    },
+    languageOptions: {
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+          tsx: true,
+          ts: true
+        },
+      },
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
-      'prettier/prettier': 'error',
+      'react/jsx-no-useless-fragment': ['warn', { allowExpressions: false }],
+      'react/no-children-prop': 'warn',
+      'react/jsx-no-undef': 'error',
+      'react/no-unstable-nested-components': 'warn',
+      'react/no-invalid-html-attribute': 'warn',
     },
-  }
-);
+  },
+];
