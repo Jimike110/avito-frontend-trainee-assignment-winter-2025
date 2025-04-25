@@ -4,13 +4,18 @@ import RealEstateForm from '../../components/FormStepTwo/RealEstateForm';
 import { ItemTypes } from '../../types/ItemTypes.js';
 import AutoForm from '../../components/FormStepTwo/AutoForm';
 import ServicesForm from '../../components/FormStepTwo/ServicesForm';
-import { BaseFormData } from '../../types/form';
+import { AdvertItem, BaseFormData } from '../../types/form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createAdvert, updateAdvertById } from '../../api/api';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, message } from 'antd';
 
-const MultiStepForm = ({ data, editing = false }) => {
+interface MultiStepFormProps {
+  data?: BaseFormData;
+  editing?: boolean;
+}
+
+const MultiStepForm: React.FC<MultiStepFormProps> = ({ data, editing = false }) => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<BaseFormData>(
     () =>
@@ -30,9 +35,9 @@ const MultiStepForm = ({ data, editing = false }) => {
   };
 
   const { mutate } = useMutation({
-    mutationFn: (payload) => {
-      return editing
-        ? updateAdvertById(data.id, payload)
+    mutationFn: (payload: AdvertItem) => {
+      return editing && data?.id
+        ?  updateAdvertById(data.id, payload)
         : createAdvert(payload);
     },
     onSuccess: () => {
@@ -71,7 +76,7 @@ const MultiStepForm = ({ data, editing = false }) => {
     setCurrentStep(2);
   };
 
-  const handlePreviousStep = (values) => {
+  const handlePreviousStep = (values: BaseFormData) => {
     setFormData((prev) => ({ ...prev, ...values }));
     setCurrentStep((prevStep) => prevStep - 1);
   };

@@ -1,7 +1,7 @@
 import { ItemTypes } from './ItemTypes';
 
 export interface BaseFormData {
-  id?: number;
+  id?: string;
   name: string;
   description: string;
   location: string;
