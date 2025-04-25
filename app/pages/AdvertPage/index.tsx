@@ -40,7 +40,7 @@ const AdvertPage = () => {
 
   const { mutate } = useMutation({
     mutationFn: (payload) => {
-      return deleteAdvertById(id)
+      return deleteAdvertById(id);
     },
     onSuccess: () => {
       navigate('/list');

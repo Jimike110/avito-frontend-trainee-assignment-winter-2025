@@ -171,9 +171,7 @@ app.put('/items/:id', (req, res) => {
 
 // Удаление объявления по его id
 app.delete('/items/:id', (req, res) => {
-  const itemIndex = items.findIndex(
-    (i) => i.id === req.params.id
-  );
+  const itemIndex = items.findIndex((i) => i.id === req.params.id);
   if (itemIndex !== -1) {
     items.splice(itemIndex, 1);
     writeData(items);

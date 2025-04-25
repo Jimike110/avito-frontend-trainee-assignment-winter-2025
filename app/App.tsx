@@ -16,11 +16,14 @@ const App: React.FC = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route index element={<Home />} />
-      <Route path="/form" element={<MultiStepForm data={""} editing={false} />} />
+      <Route
+        path="/form"
+        element={<MultiStepForm data={''} editing={false} />}
+      />
       <Route path="/test" element={<Test />} />
       <Route path="/list" element={<AdvertListing />} />
       <Route path="/item/:id" element={<AdvertPage />} />
-      <Route path='/edit/:id' element={<EditAdvert />} />
+      <Route path="/edit/:id" element={<EditAdvert />} />
     </Routes>
   );
 };
