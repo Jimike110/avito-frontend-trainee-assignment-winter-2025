@@ -134,19 +134,46 @@ const MultiStepForm = ({ data, editing = false }) => {
   };
 
   return (
-    <div>
-      <Link to={'/list'}>
-        <Button
-          size="large"
-          style={{ position: 'absolute', right: 20, top: 30 }}
-          type="primary"
-        >
-          Список размещений
-        </Button>
-      </Link>
-      {renderForm()}
+    <div
+      style={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        boxSizing: 'border-box',
+        padding: '16px',
+      }}
+    >
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '900px',
+          display: 'flex',
+          justifyContent: 'flex-end',
+          flexShrink: 0,
+        }}
+      >
+        <Link to="/list">
+          <Button size="large" type="primary">
+            Список размещений
+          </Button>
+        </Link>
+      </div>
+  
+      <div
+        style={{
+          flex: 1,
+          width: '100%',
+          maxWidth: '900px',
+          overflowY: 'auto',
+          marginTop: '16px',
+        }}
+      >
+        {renderForm()}
+      </div>
     </div>
   );
+  
 };
 
 export default MultiStepForm;
