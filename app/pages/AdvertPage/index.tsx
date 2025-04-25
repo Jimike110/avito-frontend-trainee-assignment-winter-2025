@@ -10,11 +10,18 @@ import {
   Tag,
   Row,
   Space,
+  message,
+  Popconfirm,
+  PopconfirmProps,
 } from 'antd';
-import { EditOutlined, EnvironmentOutlined } from '@ant-design/icons';
-import { fetchAdvertById } from '../../api/api';
-import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import {
+  DeleteFilled,
+  EditOutlined,
+  EnvironmentOutlined,
+} from '@ant-design/icons';
+import { deleteAdvertById, fetchAdvertById } from '../../api/api';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AdvertItem, typeColors } from '../../types/form';
 import { ItemTypes } from '../../types/ItemTypes';
 
@@ -23,12 +30,36 @@ const { Title, Paragraph } = Typography;
 
 const AdvertPage = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const { isLoading, data } = useQuery<AdvertItem>({
     queryKey: ['advert-item', id],
     queryFn: () => fetchAdvertById(id as string),
     enabled: !!id,
   });
+
+  const { mutate } = useMutation({
+    mutationFn: (payload) => {
+      return deleteAdvertById(id)
+    },
+    onSuccess: () => {
+      navigate('/list');
+    },
+    onError: (err) => {
+      console.error('Error creating advert:', err);
+      alert('Failed to submit form.');
+    },
+  });
+
+  const confirm: PopconfirmProps['onConfirm'] = (e) => {
+    console.log(e);
+    mutate();
+    message.success('Объявление успешно удалено');
+  };
+
+  const cancel: PopconfirmProps['onCancel'] = (e) => {
+    console.log(e);
+  };
 
   return (
     <Layout style={{ minHeight: '100vh', overflowX: 'hidden' }}>
@@ -57,11 +88,37 @@ const AdvertPage = () => {
                 boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
                 padding: '24px',
                 boxSizing: 'border-box',
+                position: 'relative',
               }}
             >
+              <Popconfirm
+                title="Удалить объявление"
+                description="Вы уверены, что хотите удалить это объявление?"
+                onConfirm={confirm}
+                onCancel={cancel}
+                okText="Да"
+                cancelText="Нет"
+              >
+                <Button
+                  style={{
+                    marginBlock: '20px',
+                    position: 'absolute',
+                    right: '20px',
+                    top: 0,
+                  }}
+                  icon={<DeleteFilled />}
+                  danger
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
               <Row gutter={[54, 24]} align="middle" justify="center">
                 {/* Image Section */}
-                <Col xs={24} md={10} style={{ textAlign: 'center' }}>
+                <Col
+                  xs={24}
+                  md={10}
+                  style={{ textAlign: 'center', marginTop: '20px' }}
+                >
                   {data.picture && data.picture.length > 0 ? (
                     <Carousel arrows infinite={false}>
                       {data.picture.map((img, index) => (
@@ -156,13 +213,11 @@ const AdvertPage = () => {
                         {data.type}
                       </Tag>
                       {data && (
-                        <Button
-                          icon={<EditOutlined />}
-                          type="primary"
-                          // onClick={() => onEdit(data.id)} // Uncomment when onEdit is defined
-                        >
-                          Редактировать
-                        </Button>
+                        <Link to={`/edit/${data.id}`} state={{ data }}>
+                          <Button icon={<EditOutlined />} type="primary">
+                            Редактировать
+                          </Button>
+                        </Link>
                       )}
                     </Row>
                   </Space>
