@@ -1,5 +1,7 @@
 // TODO - Create a responsive layout component with header/navigation if needed.
 
+// TODO - Fix 'Open' button squeezing on mobile on 'REAL ESTATE'
+
 
 // TODO - Implement dynamic filters based on category selection.
 // TODO - Display up to 5 items per page using List pagination.

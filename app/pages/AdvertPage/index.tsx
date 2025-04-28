@@ -13,6 +13,7 @@ import {
   message,
   Popconfirm,
   PopconfirmProps,
+  Flex,
 } from 'antd';
 import {
   DeleteFilled,
@@ -43,11 +44,11 @@ const AdvertPage = () => {
       return deleteAdvertById(id as string);
     },
     onSuccess: () => {
-      navigate('/list');
+      return navigate('/list');
     },
     onError: (err) => {
-      console.error('Error creating advert:', err);
-      alert('Failed to submit form.');
+      console.error('Failed to delete advert', err);
+      alert('Failed to delete advert.');
     },
   });
 
@@ -205,20 +206,29 @@ const AdvertPage = () => {
                         </Paragraph>
                       </div>
                     )}
-                    <Row justify="space-between" align="middle">
+                    <Flex
+                      wrap
+                      gap={6}
+                      justify="space-between"
+                      align="flex-start"
+                    >
                       <Tag
                         color={data.type ? typeColors[data.type] : 'default'}
                       >
                         {data.type}
                       </Tag>
                       {data && (
-                        <Link to={`/edit/${data.id}`} state={{ data }}>
+                        <Link
+                          style={{ justifySelf: 'flex-end' }}
+                          to={`/edit/${data.id}`}
+                          state={{ data }}
+                        >
                           <Button icon={<EditOutlined />} type="primary">
                             Редактировать
                           </Button>
                         </Link>
                       )}
-                    </Row>
+                    </Flex>
                   </Space>
                 </Col>
               </Row>

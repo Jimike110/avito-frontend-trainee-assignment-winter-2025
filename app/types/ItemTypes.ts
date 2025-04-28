@@ -5,3 +5,7 @@ export const ItemTypes = {
   AUTO: 'Авто' as AutoAdvert['type'],
   SERVICES: 'Услуги' as ServicesAdvert['type'],
 };
+
+export const PropertyTypes = ['Квартира', 'Дом', 'Коттедж', 'Дача', 'Этаж'];
+
+export const ServicesTypes = ['Ремонт', 'Уборка', 'Доставка'];

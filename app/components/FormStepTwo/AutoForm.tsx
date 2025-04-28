@@ -4,7 +4,7 @@ import { Auto, StepTwoFormProps } from '../../types/form';
 import { ItemTypes } from '../../types/ItemTypes';
 import FormStepTwo from './FormStepTwo';
 
-const AutoBrands = [
+export const AutoBrands = [
   ...new Set([
     'Toyota',
     'Honda',

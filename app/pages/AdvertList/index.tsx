@@ -15,14 +15,12 @@ import Paragraph from 'antd/es/typography/Paragraph';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAdverts } from '../../api/api';
 import { AdvertItem, typeColors } from '../../types/form';
-import { ItemTypes } from '../../types/ItemTypes';
+import { ItemTypes, PropertyTypes, ServicesTypes } from '../../types/ItemTypes';
 import Search, { SearchProps } from 'antd/es/input/Search';
-
-type PaginationPosition = 'top' | 'bottom' | 'both';
-type PaginationAlign = 'start' | 'center' | 'end';
+import { AutoBrands } from '../../components/FormStepTwo/AutoForm';
 
 const AdvertListing: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading] = useState<boolean>(false);
 
   const { isLoading, data } = useQuery({
     queryKey: ['items'],
@@ -49,6 +47,28 @@ const AdvertListing: React.FC = () => {
       value: ItemTypes.SERVICES,
     },
   ];
+
+  const typeOptions = (
+    option: (typeof ItemTypes)['AUTO' | 'REAL_ESTATE' | 'SERVICES']
+  ) => {
+    if (option === ItemTypes.AUTO) {
+      return AutoBrands.map((i) => ({
+        label: i,
+        value: i,
+      }));
+    } else if (option === ItemTypes.REAL_ESTATE) {
+      return PropertyTypes.map((i) => ({
+        label: i,
+        value: i,
+      }));
+    } else if (option === ItemTypes.SERVICES) {
+      return ServicesTypes.map((i) => ({
+        label: i,
+        value: i,
+      }));
+    }
+    return [];
+  };
 
   const [value, setValue] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -132,7 +152,15 @@ const AdvertListing: React.FC = () => {
 
         <Flex gap={6} wrap justify="flex-end">
           {value.map((e) => (
-            <Select key={e} placeholder={e} style={{ width: 150 }} />
+            <Select
+              mode="multiple"
+              options={typeOptions(
+                e as (typeof ItemTypes)['AUTO' | 'REAL_ESTATE' | 'SERVICES']
+              )}
+              key={e}
+              placeholder={e}
+              style={{ width: 150 }}
+            />
           ))}
         </Flex>
       </Flex>
@@ -155,7 +183,6 @@ const AdvertListing: React.FC = () => {
                       justifyContent: 'center',
                     }}
                   >
-                    {/* Placeholder for image */}
                     <Image
                       width={'100%'}
                       height={'auto'}
@@ -195,7 +222,7 @@ const AdvertListing: React.FC = () => {
                     >
                       {item.description || 'No description available.'}
                     </Paragraph>
-                    <Flex justify="space-between" align="center">
+                    <Flex wrap gap={6} justify="space-between" align="center">
                       <Tag
                         color={item.type ? typeColors[item.type] : 'default'}
                       >
