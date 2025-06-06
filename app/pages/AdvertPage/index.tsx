@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Layout,
   Card,
@@ -20,11 +20,16 @@ import {
   EditOutlined,
   EnvironmentOutlined,
 } from '@ant-design/icons';
-import { deleteAdvertById, fetchAdvertById } from '../../api/api';
+import {
+  deleteAdvertById,
+  fetchAdvertById,
+  verifyUserToAdvert,
+} from '../../api/api';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AdvertItem, typeColors } from '../../types/form';
 import { ItemTypes } from '../../types/ItemTypes';
+import { getCurrentUser } from '../../auth/auth';
 
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;
@@ -32,12 +37,30 @@ const { Title, Paragraph } = Typography;
 const AdvertPage = () => {
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [isOwner, setIsOwner] = useState(false);
 
   const { isLoading, data } = useQuery<AdvertItem>({
     queryKey: ['advert-item', id],
     queryFn: () => fetchAdvertById(id as string),
     enabled: !!id,
   });
+
+  useEffect(() => {
+    const AdvertBelongsToUser = async () => {
+      try {
+        const result = await verifyUserToAdvert(
+          id as string,
+          getCurrentUser()?.username
+        );
+        if (result) setIsOwner(true);
+      } catch (err) {
+        console.warn(err.response?.data?.error)
+        return false;
+      }
+    };
+    AdvertBelongsToUser();
+  }, [data, id]);
 
   const { mutate } = useMutation({
     mutationFn: () => {
@@ -48,7 +71,10 @@ const AdvertPage = () => {
     },
     onError: (err) => {
       console.error('Failed to delete advert', err);
-      alert('Failed to delete advert.');
+      const errorMessage =
+        err.response?.data?.error ||
+        'Update failed. Please check your credentials.';
+      messageApi.error(errorMessage);
     },
   });
 
@@ -64,6 +90,7 @@ const AdvertPage = () => {
   return (
     <Layout style={{ minHeight: '100vh', overflowX: 'hidden' }}>
       <Content>
+        {contextHolder}
         {data ? (
           <div
             style={{
@@ -91,27 +118,29 @@ const AdvertPage = () => {
                 position: 'relative',
               }}
             >
-              <Popconfirm
-                title="Удалить объявление"
-                description="Вы уверены, что хотите удалить это объявление?"
-                onConfirm={confirm}
-                onCancel={cancel}
-                okText="Да"
-                cancelText="Нет"
-              >
-                <Button
-                  style={{
-                    marginBlock: '20px',
-                    position: 'absolute',
-                    right: '20px',
-                    top: 0,
-                  }}
-                  icon={<DeleteFilled />}
-                  danger
+              {isOwner && (
+                <Popconfirm
+                  title="Удалить объявление"
+                  description="Вы уверены, что хотите удалить это объявление?"
+                  onConfirm={confirm}
+                  onCancel={cancel}
+                  okText="Да"
+                  cancelText="Нет"
                 >
-                  Delete
-                </Button>
-              </Popconfirm>
+                  <Button
+                    style={{
+                      marginBlock: '20px',
+                      position: 'absolute',
+                      right: '20px',
+                      top: 0,
+                    }}
+                    icon={<DeleteFilled />}
+                    danger
+                  >
+                    Delete
+                  </Button>
+                </Popconfirm>
+              )}
               <Row gutter={[54, 24]} align="middle" justify="center">
                 {/* Image Section */}
                 <Col
@@ -217,7 +246,7 @@ const AdvertPage = () => {
                       >
                         {data.type}
                       </Tag>
-                      {data && (
+                      {data && isOwner && (
                         <Link
                           style={{ justifySelf: 'flex-end' }}
                           to={`/edit/${data.id}`}

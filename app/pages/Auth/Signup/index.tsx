@@ -1,12 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Flex } from 'antd';
-import { Link } from 'react-router-dom';
+import { Button, Form, Input, Flex, message } from 'antd'; // Removed Checkbox if not used
+import { Link, useNavigate } from 'react-router-dom';
 import Title from 'antd/es/typography/Title';
+import { User } from '../../../types/users';
+import { signup, isAuthenticated } from '../../../auth/auth'; // Import isAuthenticated
+import '../auth.css';
 
 const Signup: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+  const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate('/list'); // Or your desired redirect path for already logged-in users
+    }
+  }, [navigate]);
+
+  const onFinish = async (values: User) => {
+    if (values.password !== values.confirmPassword) {
+      messageApi.error('Passwords do not match!');
+      return;
+    }
+    try {
+      await signup(values.username, values.password);
+      messageApi.success('Signup successful! Please log in.');
+      navigate('/login');
+    } catch (err: any) {
+      console.error('Error processing signup', err);
+      const errorMessage =
+        err.response?.data?.error || 'Signup failed. Please try again.';
+      messageApi.error(errorMessage);
+    }
   };
 
   return (
@@ -17,11 +43,14 @@ const Signup: React.FC = () => {
       align="center"
       justify="center"
     >
+      <p>{contextHolder}</p>
       <Title level={3}>Sign Up</Title>
       <Form
+        form={form}
         name="signup"
-        initialValues={{ remember: true }}
         onFinish={onFinish}
+        style={{ minWidth: 300 }}
+        scrollToFirstError
       >
         <Form.Item
           name="username"
@@ -32,37 +61,42 @@ const Signup: React.FC = () => {
         <Form.Item
           name="password"
           rules={[{ required: true, message: 'Please input your Password!' }]}
+          hasFeedback
         >
-          <Input
+          <Input.Password // Use Input.Password for visibility toggle
             prefix={<LockOutlined />}
-            type="password"
             placeholder="Password"
           />
         </Form.Item>
         <Form.Item
-          name="confirm-password"
-          rules={[{ required: true, message: 'Please input your Password!' }]}
+          name="confirmPassword" // Changed name to confirmPassword
+          dependencies={['password']}
+          hasFeedback
+          rules={[
+            { required: true, message: 'Please confirm your Password!' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error('The two passwords that you entered do not match!')
+                );
+              },
+            }),
+          ]}
         >
-          <Input
+          <Input.Password // Use Input.Password
             prefix={<LockOutlined />}
-            type="password"
             placeholder="Confirm password"
           />
         </Form.Item>
-        <Form.Item>
-          <Flex justify="space-between" align="center">
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-            <a href="">Forgot password</a>
-          </Flex>
-        </Form.Item>
-
+        {/* Removed Remember me and Forgot password as they are less common on signup */}
         <Form.Item>
           <Button block type="primary" htmlType="submit">
             Sign Up
           </Button>
-          or <Link to="/login">Log In</Link>
+          Or <Link to="/login">already have an account? Log In</Link>
         </Form.Item>
       </Form>
     </Flex>
