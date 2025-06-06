@@ -3,11 +3,11 @@ export interface Username {
 }
 export interface User extends Username {
   password: string;
+  confirmPassword: string;
 }
 
 export interface UserPayload {
-  userId: string;
+  userId: number;
   username: string;
-  iat: number;
-  exp: number
+  exp: number;
 }

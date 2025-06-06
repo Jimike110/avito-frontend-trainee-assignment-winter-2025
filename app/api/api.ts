@@ -1,6 +1,5 @@
 import { AxiosResponse } from 'axios';
 import { AdvertItem } from '../types/form';
-import { Username } from '../types/users';
 import { api } from '../auth/auth'
 
 export let API_BASE_URL: string = import.meta.env.VITE_APP_BASE_URL;
@@ -34,19 +33,17 @@ export const fetchAdvertById = async (id: string): Promise<AdvertItem> => {
   return response.data;
 };
 
-export const verifyUserToAdvert = async (id: string, username: string) => {
+export const verifyUserToAdvert = async (id: string) => {
   const response: AxiosResponse<boolean> = await api.get(
     `/api/verify/${id}`,
-    username
   );
   return response.data;
 }
 
-export const updateAdvertById = async (id: string, advertData: AdvertItem, username: Username["username"]) => {
+export const updateAdvertById = async (id: string, advertData: AdvertItem) => {
   const response: AxiosResponse<AdvertItem> = await api.put(
     `/items/${id}`,
     advertData,
-    username
   );
   return response.data;
 };

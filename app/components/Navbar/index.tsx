@@ -15,9 +15,7 @@ const Navbar: React.FC = () => {
   const handleLogout = () => {
     performLogout();
     message.success('Logged out successfully.');
-    navigate('/login');
-    // You might need to force a re-render or use a state management solution
-    // to update the navbar immediately if it shows conditional content.
+    void navigate('/login');
   };
 
   return (
