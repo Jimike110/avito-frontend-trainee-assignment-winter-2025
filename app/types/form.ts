@@ -1,4 +1,5 @@
 import { ItemTypes } from './ItemTypes';
+import { Username } from './users';
 
 export interface BaseFormData {
   id?: string;
@@ -30,15 +31,15 @@ export interface Services {
   workHours?: string;
 }
 
-export interface RealEstateAdvert extends BaseFormData, RealEstate {
+export interface RealEstateAdvert extends BaseFormData, RealEstate, Username {
   type: 'Недвижимость';
 }
 
-export interface AutoAdvert extends BaseFormData, Auto {
+export interface AutoAdvert extends BaseFormData, Auto, Username {
   type: 'Авто';
 }
 
-export interface ServicesAdvert extends BaseFormData, Services {
+export interface ServicesAdvert extends BaseFormData, Services, Username {
   type: 'Услуги';
 }
 
