@@ -63,7 +63,10 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({
     },
     onError: (err) => {
       console.error('Error creating advert:', err);
-      alert('Failed to submit form.');
+      const errorMessage =
+        err.response?.data?.error ||
+        'Update failed. Please check your credentials.';
+      messageApi.error(errorMessage);
     },
   });
 

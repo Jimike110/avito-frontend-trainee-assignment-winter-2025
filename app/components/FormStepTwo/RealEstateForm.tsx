@@ -17,7 +17,7 @@ const RealEstateForm: React.FC<StepTwoFormProps> = (props) => {
             { value: 'Квартира', label: 'Квартира' },
             { value: 'Дом', label: 'Дом' },
             { value: 'Коттедж', label: 'Коттедж' },
-            { value: 'Дача', label: 'Дача' }
+            { value: 'Дача', label: 'Дача' },
           ]}
         />
       </Form.Item>
