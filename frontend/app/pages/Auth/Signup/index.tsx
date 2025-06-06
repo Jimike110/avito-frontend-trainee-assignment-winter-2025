@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Flex, message } from 'antd'; // Removed Checkbox if not used
+import { Button, Form, Input, Flex, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import Title from 'antd/es/typography/Title';
 import { User } from '../../../types/users';
-import { signup, isAuthenticated } from '../../../auth/auth'; // Import isAuthenticated
+import { signup, isAuthenticated } from '../../../auth/auth';
 import '../auth.css';
 
 const Signup: React.FC = () => {
@@ -14,7 +14,7 @@ const Signup: React.FC = () => {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      navigate('/list'); // Or your desired redirect path for already logged-in users
+      void navigate('/list');
     }
   }, [navigate]);
 
@@ -26,9 +26,8 @@ const Signup: React.FC = () => {
     try {
       await signup(values.username, values.password);
       messageApi.success('Signup successful! Please log in.');
-      navigate('/login');
+      void navigate('/login');
     } catch (err: any) {
-      console.error('Error processing signup', err);
       const errorMessage =
         err.response?.data?.error || 'Signup failed. Please try again.';
       messageApi.error(errorMessage);
@@ -69,7 +68,7 @@ const Signup: React.FC = () => {
           />
         </Form.Item>
         <Form.Item
-          name="confirmPassword" // Changed name to confirmPassword
+          name="confirmPassword"
           dependencies={['password']}
           hasFeedback
           rules={[
@@ -86,12 +85,11 @@ const Signup: React.FC = () => {
             }),
           ]}
         >
-          <Input.Password // Use Input.Password
+          <Input.Password
             prefix={<LockOutlined />}
             placeholder="Confirm password"
           />
         </Form.Item>
-        {/* Removed Remember me and Forgot password as they are less common on signup */}
         <Form.Item>
           <Button block type="primary" htmlType="submit">
             Sign Up

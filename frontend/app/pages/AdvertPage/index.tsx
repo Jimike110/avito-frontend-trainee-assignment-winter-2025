@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Layout,
   Card,
@@ -29,7 +29,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AdvertItem, typeColors } from '../../types/form';
 import { ItemTypes } from '../../types/ItemTypes';
-import { getCurrentUser } from '../../auth/auth';
 
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;
@@ -51,7 +50,6 @@ const AdvertPage = () => {
       try {
         const result = await verifyUserToAdvert(
           id as string,
-          getCurrentUser()?.username
         );
         if (result) setIsOwner(true);
       } catch (err) {
@@ -59,7 +57,7 @@ const AdvertPage = () => {
         return false;
       }
     };
-    AdvertBelongsToUser();
+    void AdvertBelongsToUser();
   }, [data, id]);
 
   const { mutate } = useMutation({
@@ -71,7 +69,8 @@ const AdvertPage = () => {
     },
     onError: (err) => {
       console.error('Failed to delete advert', err);
-      const errorMessage =
+      let errorMessage: never;
+      errorMessage =
         err.response?.data?.error ||
         'Update failed. Please check your credentials.';
       messageApi.error(errorMessage);

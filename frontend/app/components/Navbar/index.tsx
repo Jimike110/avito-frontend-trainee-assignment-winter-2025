@@ -5,7 +5,7 @@ import {
   getCurrentUser,
   isAuthenticated,
   logout as performLogout,
-} from '../../auth/auth'; // Adjust path
+} from '../../auth/auth';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Flex, message } from 'antd';
+import { Button, Form, Input, Flex, message } from 'antd';
 import '../auth.css';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Title from 'antd/es/typography/Title';
-import { login, isAuthenticated } from '../../../auth/auth'; // Import isAuthenticated
+import { login, isAuthenticated } from '../../../auth/auth';
 import { User } from '../../../types/users';
 
 const Login: React.FC = () => {
@@ -16,7 +16,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      navigate(from, { replace: true });
+      void navigate(from, { replace: true });
     }
   }, [navigate, from]);
 
@@ -24,9 +24,8 @@ const Login: React.FC = () => {
     try {
       await login(values.username, values.password);
       messageApi.success('Login successful!');
-      navigate(from, { replace: true });
+      void navigate(from, { replace: true });
     } catch (err: any) {
-      console.error('Failed to process login', err);
       const errorMessage =
         err.response?.data?.error ||
         'Login failed. Please check your credentials.';
@@ -66,14 +65,6 @@ const Login: React.FC = () => {
               type="password"
               placeholder="Password"
             />
-          </Form.Item>
-          <Form.Item>
-            <Flex justify="space-between" align="center">
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
-              {/* <a href="">Forgot password</a> Link to password recovery if you implement it */}
-            </Flex>
           </Form.Item>
 
           <Form.Item>

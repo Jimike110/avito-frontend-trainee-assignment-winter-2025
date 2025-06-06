@@ -57,7 +57,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
         const data = await response.json();
         if (onSuccess) {
           onSuccess(data);
-          message.success(`${(file as File)?.name} file uploaded successfully`); // Safe access to name
+          message.success(`${(file as File)?.name} file uploaded successfully`);
         }
       } else {
         const errorData = await response.json();
@@ -69,7 +69,7 @@ const FormStepOne: React.FC<FormStep1Props> = ({
             errorData
           );
           message.error(
-            `${(file as File)?.name} file upload failed: ${errorData?.error || response.statusText}` // Safe access to name
+            `${(file as File)?.name} file upload failed: ${errorData?.error || response.statusText}`
           );
         }
       }

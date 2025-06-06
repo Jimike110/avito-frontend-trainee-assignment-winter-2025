@@ -121,19 +121,6 @@ app.post('/api/refresh_token', (req, res) => {
   res.json({ accessToken });
 });
 
-// Protected example
-// app.get('/api/protected', (req, res) => {
-//   const auth = req.headers.authorization;
-//   if (!auth) return res.status(401).end();
-//   const token = auth.split(' ')[1];
-//   try {
-//     const payload = jwt.verify(token, JWT_ACCESS_SECRET);
-//     res.json({ data: `Hello user ${payload.sub}` });
-//   } catch {
-//     res.status(401).end();
-//   }
-// });
-
 // Ensure the upload folder exists
 const UPLOAD_FOLDER = './uploads';
 if (!fs.existsSync(UPLOAD_FOLDER)) {
