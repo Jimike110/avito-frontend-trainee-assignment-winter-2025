@@ -2,16 +2,7 @@ import { AxiosResponse } from 'axios';
 import { AdvertItem } from '../types/form';
 import { api } from '../auth/auth'
 
-export let API_BASE_URL: string = import.meta.env.VITE_APP_BASE_URL;
-
-if (
-  window.location.hostname !== 'localhost' &&
-  window.location.protocol === 'http:'
-) {
-  // Assuming if not localhost and using HTTP, it might be the phone
-  API_BASE_URL = `http://192.168.18.254:3000`;
-}
-
+export const API_BASE_URL: string = import.meta.env.VITE_APP_BASE_URL;
 
 export const fetchAdverts = async (): Promise<AdvertItem[]> => {
   const response: AxiosResponse<AdvertItem[]> = await api.get('/items');

@@ -9,7 +9,9 @@ declare module 'axios' {
   }
 }
 
-export const api = axios.create({ baseURL: 'http://localhost:3000' });
+export const api = axios.create({
+  baseURL: 'https://avito-frontend-trainee-assignment-winter.onrender.com',
+});
 
 // Access token handling
 const getAccessToken = (): string | null => localStorage.getItem('accessToken');
