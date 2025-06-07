@@ -1,13 +1,13 @@
-import express from 'express';
-import cors from 'cors';
-import multer from 'multer';
-import path from 'path';
-import fs from 'fs-extra';
-import { ItemTypes } from './ItemTypes.js';
-import { v4 as uuidv4 } from 'uuid';
-import cookieParser from 'cookie-parser';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+import express from "express";
+import cors from "cors";
+import multer from "multer";
+import path from "path";
+import fs from "fs-extra";
+import { ItemTypes } from "./ItemTypes.js";
+import { v4 as uuidv4 } from "uuid";
+import cookieParser from "cookie-parser";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 const app = express();
 
@@ -15,25 +15,25 @@ const PORT = process.env.PORT || 3000;
 
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://jimike-avito-clone.netlify.app'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: ["http://localhost:5173", "https://jimike-avito-clone.netlify.app"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with'],
+    allowedHeaders: ["Content-Type", "Authorization", "x-requested-with"],
   })
 );
 
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use(cookieParser());
 
-const USERS_FILE = './data/users.json';
-const JWT_ACCESS_SECRET = process.env.ACCESS_SECRET || 'access_secret';
-const JWT_REFRESH_SECRET = process.env.REFRESH_SECRET || 'refresh_secret';
+const USERS_FILE = "./data/users.json";
+const JWT_ACCESS_SECRET = process.env.ACCESS_SECRET || "access_secret";
+const JWT_REFRESH_SECRET = process.env.REFRESH_SECRET || "refresh_secret";
 
 const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, JWT_ACCESS_SECRET, (err, user) => {
@@ -55,13 +55,14 @@ async function saveUsers(users) {
 }
 
 // Register endpoint
-app.post('/api/signup', async (req, res) => {
-  const { username, password } = req.body;
+app.post("/api/signup", async (req, res) => {
+  let { username, password } = req.body;
   const users = await loadUsers();
+  username = username.toLowerCase();
   if (users.find((u) => u.username === username)) {
     return res
       .status(409)
-      .json({ error: 'Username has been taken. Try another' });
+      .json({ error: "Username has been taken. Try another" });
   }
   const hash = await bcrypt.hash(password, 10);
   users.push({ id: Date.now(), username, hash });
@@ -70,38 +71,39 @@ app.post('/api/signup', async (req, res) => {
 });
 
 // Login endpoint
-app.post('/api/login', async (req, res) => {
-  const { username, password } = req.body;
+app.post("/api/login", async (req, res) => {
+  let { username, password } = req.body;
+  username = username.toLowerCase();
   const users = await loadUsers();
   const user = users.find((u) => u.username === username);
   if (!user || !(await bcrypt.compare(password, user.hash))) {
-    return res.status(403).json({ error: 'Invalid credentials.' });
+    return res.status(403).json({ error: "Invalid credentials." });
   }
   // Create tokens
   const accessToken = jwt.sign(
     { userId: user.id, username: user.username },
     JWT_ACCESS_SECRET,
     {
-      expiresIn: '15m',
+      expiresIn: "15m",
     }
   );
   const refreshToken = jwt.sign(
     { userId: user.id, username: user.username },
     JWT_REFRESH_SECRET,
     {
-      expiresIn: '7d',
+      expiresIn: "7d",
     }
   );
   // Send refresh token as HttpOnly cookie
-  res.cookie('jid', refreshToken, {
+  res.cookie("jid", refreshToken, {
     httpOnly: true,
-    path: '/api/refresh_token',
+    path: "/api/refresh_token",
   });
   res.json({ accessToken });
 });
 
 // Refresh endpoint
-app.post('/api/refresh_token', (req, res) => {
+app.post("/api/refresh_token", (req, res) => {
   const token = req.cookies.jid;
   if (!token) return res.status(401).end();
   let payload;
@@ -115,14 +117,14 @@ app.post('/api/refresh_token', (req, res) => {
     { userId: payload.userId, username: payload.username },
     JWT_ACCESS_SECRET,
     {
-      expiresIn: '15m',
+      expiresIn: "15m",
     }
   );
   res.json({ accessToken });
 });
 
 // Ensure the upload folder exists
-const UPLOAD_FOLDER = './uploads';
+const UPLOAD_FOLDER = "./uploads";
 if (!fs.existsSync(UPLOAD_FOLDER)) {
   fs.mkdirSync(UPLOAD_FOLDER);
 }
@@ -133,9 +135,9 @@ const storage = multer.diskStorage({
     cb(null, UPLOAD_FOLDER);
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + '-' + uniqueSuffix + ext);
+    cb(null, file.fieldname + "-" + uniqueSuffix + ext);
   },
 });
 
@@ -147,25 +149,25 @@ const upload = multer({
 // In-memory хранилище для объявлений
 // let items = [];
 
-const DATA_FILE = './data/adverts.json';
+const DATA_FILE = "./data/adverts.json";
 
 if (!fs.existsSync(DATA_FILE)) {
-  fs.writeFileSync(DATA_FILE, '[]', 'utf-8');
+  fs.writeFileSync(DATA_FILE, "[]", "utf-8");
 }
 
 function readData() {
   try {
-    const rawData = fs.readFileSync(DATA_FILE, 'utf-8');
+    const rawData = fs.readFileSync(DATA_FILE, "utf-8");
     return JSON.parse(rawData);
   } catch (error) {
-    if (error.code === 'ENOENT' || error instanceof SyntaxError) {
+    if (error.code === "ENOENT" || error instanceof SyntaxError) {
       return [];
     }
   }
 }
 
 function writeData(data) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf-8");
 }
 
 let items = readData();
@@ -178,12 +180,14 @@ let items = readData();
 // const itemsIdCounter = makeCounter();
 
 // Upload endpoint
-app.post('/upload', upload.single('file'), (req, res) => {
+app.post("/upload", upload.single("file"), (req, res) => {
   if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
+    return res.status(400).json({ error: "No file uploaded" });
   }
 
-  const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${
+    req.file.filename
+  }`;
   res.status(200).json({
     name: req.file.filename,
     url: fileUrl,
@@ -191,12 +195,12 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 // Создание нового объявления
-app.post('/items', authenticateToken, (req, res) => {
+app.post("/items", authenticateToken, (req, res) => {
   const { name, description, location, type, ...rest } = req.body;
 
   // Validate common required fields
   if (!name || !description || !location || !type) {
-    return res.status(400).json({ error: 'Missing required common fields' });
+    return res.status(400).json({ error: "Missing required common fields" });
   }
 
   switch (type) {
@@ -204,25 +208,25 @@ app.post('/items', authenticateToken, (req, res) => {
       if (!rest.propertyType || !rest.area || !rest.rooms || !rest.price) {
         return res
           .status(400)
-          .json({ error: 'Missing required fields for Real estate' });
+          .json({ error: "Missing required fields for Real estate" });
       }
       break;
     case ItemTypes.AUTO:
       if (!rest.brand || !rest.model || !rest.year || !rest.mileage) {
         return res
           .status(400)
-          .json({ error: 'Missing required fields for Auto' });
+          .json({ error: "Missing required fields for Auto" });
       }
       break;
     case ItemTypes.SERVICES:
       if (!rest.serviceType || !rest.experience || !rest.cost) {
         return res
           .status(400)
-          .json({ error: 'Missing required fields for Services' });
+          .json({ error: "Missing required fields for Services" });
       }
       break;
     default:
-      return res.status(400).json({ error: 'Invalid type' });
+      return res.status(400).json({ error: "Invalid type" });
   }
 
   const item = {
@@ -242,7 +246,7 @@ app.post('/items', authenticateToken, (req, res) => {
 });
 
 // Получение всех объявлений
-app.get('/items', authenticateToken, (req, res) => {
+app.get("/items", authenticateToken, (req, res) => {
   res.json(items);
 });
 
@@ -255,19 +259,19 @@ function verifyUser(item, req, res, status, errorMessage) {
 }
 
 // Получение объявления по его id
-app.get('/items/:id', authenticateToken, (req, res) => {
+app.get("/items/:id", authenticateToken, (req, res) => {
   const item = items.find((i) => i.id === req.params.id);
   if (item) {
     res.json(item);
   } else {
-    res.status(404).send('Item not found');
+    res.status(404).send("Item not found");
   }
 });
 
 // Обновление объявления по его id
-app.put('/items/:id', authenticateToken, (req, res) => {
+app.put("/items/:id", authenticateToken, (req, res) => {
   const item = items.find((i) => i.id === req.params.id);
-  if (!item) return res.status(404).send('Item not found');
+  if (!item) return res.status(404).send("Item not found");
 
   if (
     !verifyUser(
@@ -275,7 +279,7 @@ app.put('/items/:id', authenticateToken, (req, res) => {
       req,
       res,
       403,
-      'Forbidden: You can only update your own items.'
+      "Forbidden: You can only update your own items."
     )
   )
     return;
@@ -286,9 +290,9 @@ app.put('/items/:id', authenticateToken, (req, res) => {
 });
 
 // Удаление объявления по его id
-app.delete('/items/:id', authenticateToken, (req, res) => {
+app.delete("/items/:id", authenticateToken, (req, res) => {
   const itemIndex = items.findIndex((i) => i.id === req.params.id);
-  if (itemIndex === -1) return res.status(404).send('Item not found');
+  if (itemIndex === -1) return res.status(404).send("Item not found");
 
   const item = items[itemIndex];
   if (
@@ -297,7 +301,7 @@ app.delete('/items/:id', authenticateToken, (req, res) => {
       req,
       res,
       403,
-      'Forbidden: You can only delete your own items.'
+      "Forbidden: You can only delete your own items."
     )
   )
     return;
@@ -307,9 +311,9 @@ app.delete('/items/:id', authenticateToken, (req, res) => {
   res.status(204).send();
 });
 
-app.get('/api/verify/:id', authenticateToken, (req, res) => {
+app.get("/api/verify/:id", authenticateToken, (req, res) => {
   const item = items.find((i) => i.id === req.params.id);
-  if (!item) return res.status(404).send('Item not found');
+  if (!item) return res.status(404).send("Item not found");
 
   if (
     !verifyUser(
@@ -317,7 +321,7 @@ app.get('/api/verify/:id', authenticateToken, (req, res) => {
       req,
       res,
       403,
-      'Forbidden: You do not have access to edit this advert.'
+      "Forbidden: You do not have access to edit this advert."
     )
   )
     return;
